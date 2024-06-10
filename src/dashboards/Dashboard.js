@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
 import PrivateRoute from "./PrivateRoute";
 import Tasaciones from "../pages/tasaciones/Tasaciones";
+import LoginPage from "../pages/loginPage/LoginPage";
 
 export const usePaginas = () => {
     const paginas = [
@@ -43,6 +44,7 @@ export default function Dashboard() {
                     <Route path="*" element={<h1>404</h1>} />
                 </Route>
             </Route>
+            <Route path="/login/" element={<LoginPage />} />
 
         </Routes>
     )

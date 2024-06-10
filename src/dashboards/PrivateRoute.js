@@ -12,7 +12,6 @@ export default function PrivateRoute() {
         }
     }, [token]);
 
-    return <Outlet />;
     if (loading) return null;
     return token ? <Outlet /> : <Navigate to="/login" />;
 };

@@ -42,6 +42,8 @@ export default function useFetch() {
       headers = getHeaderToken(headers);
     }
 
+    console.log(headers);
+
     return customFetch(url, { method: 'GET', headers: headers });
   };
 

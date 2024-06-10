@@ -17,7 +17,6 @@ function UserProvider({ children }) {
 
     function logout() {
         setToken(null);
-        console.log('hola :D');
         localStorage.removeItem('token');
     }
 
