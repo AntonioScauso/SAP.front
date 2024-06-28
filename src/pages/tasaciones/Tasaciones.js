@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Grid, Autocomplete, Typography } from "@mui/material";
-import { GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import { GridToolbarContainer, GridToolbarExport, DataGrid } from "@mui/x-data-grid";
 import BotonLoading from "../../components/BotonLoading";
 import CustomDataGrid from "../../components/CustomDataGrid";
 import { esES } from "@mui/material/locale";
@@ -79,7 +79,7 @@ export default function Tasaciones() {
 
     return (
         <Grid container gap={5}>
-            <Grid container gap={5} justifyContent={'center'} alignItems={'center'}>
+            <Grid container gap={5} justifyContent={'center'} alignItems={'center'} marginBottom={5}>
                 <Autocomplete
                     options={circunscripciones?.map(circunscripcion => circunscripcion.nombre)}
                     style={{ width: 200 }}
@@ -155,6 +155,19 @@ export default function Tasaciones() {
                             localeText={esES.components.MuiDataGrid?.defaultProps?.localeText}
                             slots={{ toolbar: CustomGridToolBar }}
                             style={{ flexGrow: 1, padding: 10 }}
+                            getRowClassName={(params) => {
+                                return params.row.id === 3 ? 'dolarMEP-row' : params.row.id === 2 ? 'dolarOficial-row' : 'pesos-row';
+                            }}
+                            sx={{
+                                '& .MuiDataGrid-row': {
+                                    '&.dolarMEP-row': {
+                                        backgroundColor: '#88cc88',
+                                    },
+                                    '&.dolarOficial-row': {
+                                        backgroundColor: '#66cc66',
+                                    }
+                                }
+                            }}
                         />
                     </Grid>
                 </Grid>
@@ -162,4 +175,3 @@ export default function Tasaciones() {
         </Grid>
     );
 }
-

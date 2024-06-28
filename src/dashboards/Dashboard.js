@@ -7,13 +7,6 @@ import LoginPage from "../pages/loginPage/LoginPage";
 export const usePaginas = () => {
     const paginas = [
         {
-            nombre: "Home",
-            seccion: "home",
-            url: "/home/",
-            component: <h1>Home</h1>,
-            componentUrl: "/home/"
-        },
-        {
             nombre: "Tasaciones",
             seccion: "tasaciones",
             url: "/tasaciones/",
@@ -41,10 +34,10 @@ export default function Dashboard() {
                             :
                             <Route key={index} path={pagina.componentUrl} element={pagina.component} />
                     ))}
-                    <Route path="*" element={<h1>404</h1>} />
+                    <Route path="*" element={<h1>HOME</h1>} />
                 </Route>
             </Route>
-            <Route path="/login/" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
 
         </Routes>
     )
