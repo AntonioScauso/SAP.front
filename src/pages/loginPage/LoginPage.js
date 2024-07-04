@@ -52,7 +52,7 @@ export default function LoginPage() {
             .then(response => {
                 if (response.token) {
                     login(response);
-                    navigate("/");
+                    navigate("/tasaciones/");
                 }
             })
             .catch(() => {
