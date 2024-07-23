@@ -34,7 +34,7 @@ export default function Dashboard() {
                             :
                             <Route key={index} path={pagina.componentUrl} element={pagina.component} />
                     ))}
-                    <Route path="*" element={<h1>HOME</h1>} />
+                    <Route path="*" element={<Tasaciones />} />
                 </Route>
             </Route>
             <Route path="/login" element={<LoginPage />} />

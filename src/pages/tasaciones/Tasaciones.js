@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { TextField, Grid, Autocomplete, Typography } from "@mui/material";
-import { GridToolbarContainer, GridToolbarExport, DataGrid } from "@mui/x-data-grid";
+import React, { useEffect, useState, useRef } from 'react';
+import { TextField, Grid, Autocomplete, Typography, Divider, Box, IconButton } from "@mui/material";
+import { GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import BotonLoading from "../../components/BotonLoading";
 import CustomDataGrid from "../../components/CustomDataGrid";
 import { esES } from "@mui/material/locale";
 import useFetch, { host } from "../../utils/Fetch";
+import LogoColegio from "../../imagenes/LogoColegio.png";
+import Indices from "./Indices";
+import BackspaceIcon from '@mui/icons-material/Backspace';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 export default function Tasaciones() {
     const [circunscripciones, setCircunscripciones] = useState(null);
@@ -15,6 +19,15 @@ export default function Tasaciones() {
     const [precios, setPrecios] = useState(null);
     const [loading, setLoading] = useState(false);
     const [zonaEnTabla, setZonaEnTabla] = useState(null);
+    const [dolarOficial, setDolarOficial] = useState(null);
+    const [dolarMep, setDolarMep] = useState(null);
+    const [indice1, setIndice1] = useState('');
+    const [indice2, setIndice2] = useState('');
+    const [indice3, setIndice3] = useState('');
+
+    const localidadRef = useRef(null);
+    const barrioRef = useRef(null);
+    const zonaRef = useRef(null);
 
     const { getFetch } = useFetch();
     const url = `${host}tasacion/`;
@@ -23,6 +36,10 @@ export default function Tasaciones() {
         getFetch(url + 'data/', true)
             .then(data => {
                 setCircunscripciones(data.circunscripciones);
+                //seteale a cada indice un vector con algunos indices randoms
+                setIndice1([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+                setIndice2([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+                setIndice3([21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
             });
     }, []);
 
@@ -41,6 +58,8 @@ export default function Tasaciones() {
                     precioMinDolarMep: data.precioMinDolarMep,
                     promedioDolarMep: data.promedioDolarMep,
                 });
+                setDolarOficial(data.dolarOficial);
+                setDolarMep(data.dolarMep);
             })
             .finally(() => {
                 setLoading(false);
@@ -59,7 +78,6 @@ export default function Tasaciones() {
                         Precios de la zona: {zonaEnTabla?.nombre}
                     </Typography>
                 }
-                <GridToolbarExport />
             </GridToolbarContainer>
         )
     }
@@ -77,101 +95,212 @@ export default function Tasaciones() {
         { id: 3, priceType: 'Dólar MEP', minPrice: precios ? precios.precioMinDolarMep : '', maxPrice: precios ? precios.precioMaxDolarMep : '', avgPrice: precios ? precios.promedioDolarMep : '' },
     ];
 
+    useEffect(() => {
+        if (circunscripcion) {
+            const selectedCircunscripcion = circunscripciones.find(circ => circ.nombre === circunscripcion);
+            if (selectedCircunscripcion && selectedCircunscripcion.localidades.length === 1) {
+                setLocalidad(selectedCircunscripcion.localidades[0].nombre);
+            } else {
+                setTimeout(() => {
+                    if (localidadRef.current) {
+                        localidadRef.current.focus();
+                        localidadRef.current.click();
+                    }
+                }, 0);
+            }
+        }
+        if (localidad) {
+            const selectedLocalidad = circunscripciones.find(circ => circ.nombre === circunscripcion).localidades.find(loc => loc.nombre === localidad);
+            if (selectedLocalidad.barrios.length === 1) {
+                setBarrio(selectedLocalidad.barrios[0].nombre);
+            } else {
+                setTimeout(() => {
+                    if (barrioRef.current) {
+                        barrioRef.current.focus();
+                        barrioRef.current.click();
+                    }
+                }, 0);
+            }
+        }
+        if (barrio) {
+            const selectedBarrio = circunscripciones.find(circ => circ.nombre === circunscripcion).localidades.find(loc => loc.nombre === localidad).barrios.find(bar => bar.nombre === barrio);
+            if (selectedBarrio.zonas.length === 1) {
+                setZona(selectedBarrio.zonas[0]);
+            } else {
+                setTimeout(() => {
+                    if (zonaRef.current) {
+                        zonaRef.current.focus();
+                        zonaRef.current.click();
+                    }
+                }, 0);
+            }
+        }
+    }, [circunscripcion, circunscripciones, localidad, barrio]);
+
+    const handleClear = () => {
+        setCircunscripcion(null);
+        setLocalidad(null);
+        setBarrio(null);
+        setZona(null);
+        setPrecios(null);
+        setZonaEnTabla(null);
+    };
+
     return (
-        <Grid container gap={5}>
-            <Grid container gap={5} justifyContent={'center'} alignItems={'center'} marginBottom={5}>
-                <Autocomplete
-                    options={circunscripciones?.map(circunscripcion => circunscripcion.nombre)}
-                    style={{ width: 200 }}
-                    value={circunscripcion}
-                    renderInput={(params) => <TextField {...params} label="Circunscripcion" />}
-                    onChange={(event, newValue) => {
-                        setCircunscripcion(newValue);
-                        setLocalidad(null);
-                        setBarrio(null);
-                        setZona(null);
-                    }}
-                />
-                <Autocomplete
-                    options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.map(localidad => localidad.nombre) || []}
-                    value={localidad}
-                    style={{ width: 200 }}
-                    disabled={circunscripcion === null}
-                    renderInput={(params) => <TextField {...params} label="Localidad" />}
-                    onChange={(event, newValue) => {
-                        setLocalidad(newValue);
-                        setBarrio(null);
-                        setZona(null);
-                    }}
-                />
-                <Autocomplete
-                    options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.map(barrio => barrio.nombre) || []}
-                    value={barrio}
-                    style={{ width: 200 }}
-                    disabled={localidad === null}
-                    renderInput={(params) => <TextField {...params} label="Barrio" />}
-                    onChange={(event, newValue) => {
-                        setBarrio(newValue);
-                        setZona(null);
-                    }}
-                />
-                <Autocomplete
-                    options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.map(zona => zona.nombre) || []}
-                    value={zona?.nombre || ''}
-                    style={{ width: 200 }}
-                    disabled={barrio === null}
-                    renderInput={(params) => <TextField {...params} label="Zona" />}
-                    onChange={(event, newValue) => {
-                        setZona(circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.find(zon => zon.nombre === newValue));
-                    }}
-                />
-                <Grid style={{ width: 150 }}>
-                    <BotonLoading
-                        loading={loading}
-                        funcion={() => buscarZona(zona)}
-                        state={zona === null}
-                    >
-                        Buscar
-                    </BotonLoading>
-                </Grid>
+        <Grid container height={'100vh'} >
+            <Grid item width={'15vw'}>
+                <Indices indice1={indice1} setIndice1={setIndice1} indice2={indice2} setIndice2={setIndice2} indice3={indice3} setIndice3={setIndice3} />
             </Grid>
-            {precios &&
-                <Grid
-                    container
-                    alignItems="center"
-                    justifyContent="center"
-                    flexDirection="column"
-                    style={{
-                        height: "100vh",
-                        width: "100%",
-                    }}
-                >
-                    <Grid item xs={12} style={{ width: "100%" }} >
-                        <CustomDataGrid
-                            rows={rows}
-                            columns={columns}
-                            pageSize={3}
-                            disableRowSelectionOnClick
-                            localeText={esES.components.MuiDataGrid?.defaultProps?.localeText}
-                            slots={{ toolbar: CustomGridToolBar }}
-                            style={{ flexGrow: 1, padding: 10 }}
-                            getRowClassName={(params) => {
-                                return params.row.id === 3 ? 'dolarMEP-row' : params.row.id === 2 ? 'dolarOficial-row' : 'pesos-row';
-                            }}
-                            sx={{
-                                '& .MuiDataGrid-row': {
-                                    '&.dolarMEP-row': {
-                                        backgroundColor: '#88cc88',
-                                    },
-                                    '&.dolarOficial-row': {
-                                        backgroundColor: '#66cc66',
-                                    }
-                                }
+
+            <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#888888', width: '1px', marginRight: '10px' }} />
+
+            <Grid container marginLeft={5} style={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
+                <Grid container direction="column" spacing={2} style={{ padding: '20px' }}>
+                    <Grid container spacing={2} justifyContent="center" alignItems="center" gap={10}>
+                        <Autocomplete
+                            options={circunscripciones?.map(circunscripcion => circunscripcion.nombre)}
+                            value={circunscripcion}
+                            sx={{ width: '175px' }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Circunscripcion"
+                                />
+                            )}
+                            onChange={(event, newValue) => {
+                                setCircunscripcion(newValue);
+                                setLocalidad(null);
+                                setBarrio(null);
+                                setZona(null);
                             }}
                         />
+                        <Autocomplete
+                            options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.map(localidad => localidad.nombre) || []}
+                            value={localidad}
+                            disabled={circunscripcion === null}
+                            sx={{ width: '175px' }}
+                            openOnFocus
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Localidad"
+                                    inputRef={localidadRef}
+                                />
+                            )}
+                            onChange={(event, newValue) => {
+                                setLocalidad(newValue);
+                                setBarrio(null);
+                                setZona(null);
+                            }}
+                        />
+                        <Autocomplete
+                            options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.map(barrio => barrio.nombre) || []}
+                            value={barrio}
+                            openOnFocus
+                            sx={{ width: '175px' }}
+                            disabled={localidad === null}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Barrio"
+                                    inputRef={barrioRef}
+                                />
+                            )}
+                            onChange={(event, newValue) => {
+                                setBarrio(newValue);
+                                setZona(null);
+                            }}
+                        />
+                        <Autocomplete
+                            options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.map(zona => zona.nombre) || []}
+                            value={zona?.nombre || ''}
+                            sx={{ width: '175px' }}
+                            openOnFocus
+                            disabled={barrio === null}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Zona"
+                                    inputRef={zonaRef}
+                                />
+                            )}
+                            onChange={(event, newValue) => {
+                                setZona(circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.find(zon => zon.nombre === newValue));
+                            }}
+                        />
+                        <IconButton
+                            onClick={handleClear}
+                            color="primary"
+                            aria-label="clear fields"
+                            disabled={circunscripcion === null && zonaEnTabla === null}
+                        >
+                            <BackspaceIcon />
+                        </IconButton>
+                    </Grid>
+                    <Grid container justifyContent="center" style={{ marginTop: '20px' }}>
+                        <Grid item xs={2}>
+                            <BotonLoading
+                                loading={loading}
+                                funcion={() => buscarZona(zona)}
+                                state={zona === null}
+                                colorLetra='white'
+                                sx={{ height: '35px' }}
+                                endIcon={<QueryStatsIcon style={{ fontSize: '1.5rem' }} />}
+                            >
+                                Consultar
+                            </BotonLoading>
+                        </Grid>
                     </Grid>
                 </Grid>
-            }
+                {precios ?
+                    <Grid container justifyContent="center" style={{ flexGrow: 1, padding: '20px' }}>
+                        <Grid item xs={12} marginRight={2} overflow={'hidden'}>
+                            <CustomDataGrid
+                                rows={rows}
+                                columns={columns}
+                                pageSize={3}
+                                hideFooter
+                                disableRowSelectionOnClick
+                                localeText={esES.components.MuiDataGrid?.defaultProps?.localeText}
+                                slots={{ toolbar: CustomGridToolBar }}
+                                getRowClassName={(params) => {
+                                    return params.row.id === 3 ? 'dolarMEP-row' : params.row.id === 2 ? 'dolarOficial-row' : 'pesos-row';
+                                }}
+                                sx={{
+                                    height: '80%',
+                                    fontSize: '1.2em',
+                                    overflow: 'hidden',
+                                    backgroundColor: '#f0f0f0',
+                                    '& .MuiDataGrid-row': {
+                                        '&.dolarMEP-row': {
+                                            backgroundColor: 'rgba(33, 150, 243, 0.3)', // Azul más sólido
+                                        },
+                                        '&.dolarOficial-row': {
+                                            backgroundColor: 'rgba(76, 175, 80, 0.3)', // Verde más sólido
+                                        },
+                                        '&.pesos-row': {
+                                            backgroundColor: 'rgba(255, 152, 0, 0.3)', // Naranja más sólido
+                                        }
+                                    }
+                                }}
+                            />
+                        </Grid>
+                        <Grid item container justifyContent="center" alignContent='center' gap={25} marginBottom={5} marginTop={5}
+                            border={1} borderColor="primary.main" borderRadius={5} height={'10%'}>
+                            <Typography variant="body1">
+                                Dólar Oficial: ${dolarOficial}
+                            </Typography>
+                            <Typography variant="body1">
+                                Dólar MEP: ${dolarMep}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    :
+                    <Box container style={{ flexGrow: 1, padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <img src={LogoColegio} alt="Logo Colegio" style={{ fontSize: '300px' }} />
+                    </Box>
+                }
+            </Grid>
         </Grid>
     );
 }
