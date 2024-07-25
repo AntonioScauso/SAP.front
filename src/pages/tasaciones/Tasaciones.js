@@ -36,7 +36,6 @@ export default function Tasaciones() {
         getFetch(url + 'data/', true)
             .then(data => {
                 setCircunscripciones(data.circunscripciones);
-                //seteale a cada indice un vector con algunos indices randoms
                 setIndice1([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
                 setIndice2([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
                 setIndice3([21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
@@ -147,16 +146,24 @@ export default function Tasaciones() {
     };
 
     return (
-        <Grid container height={'100vh'} >
-            <Grid item width={'15vw'}>
+        <Box display="flex" flexDirection="row" height="100vh" width="100vw">
+            <Box display="flex" flexDirection="column" width="20%" minWidth="200px" maxWidth="300px"
+                marginTop={-2} overflow="auto" height="100%"
+                sx={{
+                    '&::-webkit-scrollbar': {
+                        width: '0.4em',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#28508E',
+                    },
+                }}>
                 <Indices indice1={indice1} setIndice1={setIndice1} indice2={indice2} setIndice2={setIndice2} indice3={indice3} setIndice3={setIndice3} />
-            </Grid>
+            </Box>
+            <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px' }} />
 
-            <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#888888', width: '1px', marginRight: '10px' }} />
-
-            <Grid container marginLeft={5} style={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
-                <Grid container direction="column" spacing={2} style={{ padding: '20px' }}>
-                    <Grid container spacing={2} justifyContent="center" alignItems="center" gap={10}>
+            <Box flexGrow={1} display="flex" flexDirection="column" overflow="auto" padding="20px">
+                <Grid container direction="column" spacing={2} mt={1}>
+                    <Grid container spacing={2} justifyContent="center" alignItems="center" gap={2}>
                         <Autocomplete
                             options={circunscripciones?.map(circunscripcion => circunscripcion.nombre)}
                             value={circunscripcion}
@@ -232,6 +239,7 @@ export default function Tasaciones() {
                             onClick={handleClear}
                             color="primary"
                             aria-label="clear fields"
+                            style={{ color: '#28508E' }}
                             disabled={circunscripcion === null && zonaEnTabla === null}
                         >
                             <BackspaceIcon />
@@ -244,7 +252,10 @@ export default function Tasaciones() {
                                 funcion={() => buscarZona(zona)}
                                 state={zona === null}
                                 colorLetra='white'
-                                sx={{ height: '35px' }}
+                                sx={{
+                                    height: '35px', backgroundColor: '#28508E',
+                                    '&:hover': { backgroundColor: '#28508E' }
+                                }}
                                 endIcon={<QueryStatsIcon style={{ fontSize: '1.5rem' }} />}
                             >
                                 Consultar
@@ -253,8 +264,8 @@ export default function Tasaciones() {
                     </Grid>
                 </Grid>
                 {precios ?
-                    <Grid container justifyContent="center" style={{ flexGrow: 1, padding: '20px' }}>
-                        <Grid item xs={12} marginRight={2} overflow={'hidden'}>
+                    <Box display="flex" flexDirection="column" mt={2}>
+                        <Box mb={2}>
                             <CustomDataGrid
                                 rows={rows}
                                 columns={columns}
@@ -267,40 +278,39 @@ export default function Tasaciones() {
                                     return params.row.id === 3 ? 'dolarMEP-row' : params.row.id === 2 ? 'dolarOficial-row' : 'pesos-row';
                                 }}
                                 sx={{
-                                    height: '80%',
+                                    height: '100%',
                                     fontSize: '1.2em',
-                                    overflow: 'hidden',
                                     backgroundColor: '#f0f0f0',
                                     '& .MuiDataGrid-row': {
                                         '&.dolarMEP-row': {
-                                            backgroundColor: 'rgba(33, 150, 243, 0.3)', // Azul más sólido
+                                            backgroundColor: 'rgba(33, 150, 243, 0.3)',
                                         },
                                         '&.dolarOficial-row': {
-                                            backgroundColor: 'rgba(76, 175, 80, 0.3)', // Verde más sólido
+                                            backgroundColor: 'rgba(76, 175, 80, 0.3)',
                                         },
                                         '&.pesos-row': {
-                                            backgroundColor: 'rgba(255, 152, 0, 0.3)', // Naranja más sólido
+                                            backgroundColor: 'rgba(255, 152, 0, 0.3)',
                                         }
                                     }
                                 }}
                             />
-                        </Grid>
-                        <Grid item container justifyContent="center" alignContent='center' gap={25} marginBottom={5} marginTop={5}
-                            border={1} borderColor="primary.main" borderRadius={5} height={'10%'}>
+                        </Box>
+                        <Box display="flex" justifyContent="center" alignItems="center" gap={4} p={2}
+                            border={1} borderColor="primary.main" borderRadius={2}>
                             <Typography variant="body1">
                                 Dólar Oficial: ${dolarOficial}
                             </Typography>
                             <Typography variant="body1">
                                 Dólar MEP: ${dolarMep}
                             </Typography>
-                        </Grid>
-                    </Grid>
+                        </Box>
+                    </Box>
                     :
-                    <Box container style={{ flexGrow: 1, padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <img src={LogoColegio} alt="Logo Colegio" style={{ fontSize: '300px' }} />
+                    <Box flexGrow={1} display="flex" alignItems="center" justifyContent="center">
+                        <img src={LogoColegio} alt="Logo Colegio" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                     </Box>
                 }
-            </Grid>
-        </Grid>
+            </Box>
+        </Box>
     );
 }
