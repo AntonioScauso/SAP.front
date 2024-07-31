@@ -8,6 +8,8 @@ const Header = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState('SAP');
 
+  const planes = ['2'];
+
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
   };
@@ -21,15 +23,16 @@ const Header = () => {
       <AppBar position="static" style={{ backgroundColor: '#28508E' }}>
         <Toolbar style={{ height: '40px', padding: 0 }}>
           <Box display="flex" alignItems="center" width="100%">
-            {/* <IconButton
-              onClick={toggleSideBar}
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ ml: 1 }}
-            >
-              <MenuIcon />
-            </IconButton> */}
+            {(planes.includes('1')) &&
+              <IconButton
+                onClick={toggleSideBar}
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ ml: 1 }}
+              >
+                <MenuIcon />
+              </IconButton>}
             <Typography
               variant="h6"
               component="div"

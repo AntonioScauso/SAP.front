@@ -148,7 +148,7 @@ export default function Tasaciones() {
     return (
         <Box display="flex" flexDirection="row" height="100vh" width="100vw">
             <Box display="flex" flexDirection="column" width="20%" minWidth="200px" maxWidth="300px"
-                marginTop={-2} overflow="auto" height="100%"
+                marginTop={-3} ml={-3} overflow="auto" height="100%" style={{ backgroundColor: '#E0E0E0' }}
                 sx={{
                     '&::-webkit-scrollbar': {
                         width: '0.4em',

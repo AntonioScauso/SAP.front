@@ -3,8 +3,11 @@ import AdminLayout from "../layouts/AdminLayout";
 import PrivateRoute from "./PrivateRoute";
 import Tasaciones from "../pages/tasaciones/Tasaciones";
 import LoginPage from "../pages/loginPage/LoginPage";
+import Administracion from "../pages/administracion/Administracion";
 
 export const usePaginas = () => {
+    const planes = ['2']
+
     const paginas = [
         {
             nombre: "Tasaciones",
@@ -14,6 +17,17 @@ export const usePaginas = () => {
             componentUrl: "/tasaciones/"
         },
     ];
+
+    if (planes.includes('1')) {
+        paginas.push({
+            nombre: "Administracion",
+            seccion: "administracion",
+            url: "/administracion/",
+            icon: '',
+            component: <Administracion />,
+            componentUrl: "/administracion/"
+        });
+    };
 
     return paginas;
 }

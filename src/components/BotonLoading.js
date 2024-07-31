@@ -10,7 +10,7 @@ export default function BotonLoading({
     colorLetra = '',
     startIcon,
     endIcon,
-    ...otherProps  // Esto capturará todas las propiedades adicionales
+    ...otherProps
 }) {
     return (
         <Button
@@ -22,7 +22,7 @@ export default function BotonLoading({
             onClick={funcion}
             startIcon={loading ? null : startIcon}
             endIcon={loading ? null : endIcon}
-            {...otherProps}  // Esto pasará todas las propiedades adicionales al Button
+            {...otherProps}
         >
             {loading ? (
                 <CircularProgress size={24} color="inherit" />

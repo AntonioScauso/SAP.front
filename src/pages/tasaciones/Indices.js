@@ -21,7 +21,7 @@ export default function Indices(props) {
     const id = open ? 'simple-popover' : undefined;
 
     const renderIndiceSection = (label, shortLabel, indice, setIndice) => (
-        <Box display="flex" flexDirection="column" mb={2} gap={1}>
+        <Box display="flex" flexDirection="column" mb={2} gap={1} paddingLeft={2} >
             <Typography variant="subtitle2">{label}</Typography>
             <TextField
                 label={shortLabel}
@@ -64,8 +64,8 @@ export default function Indices(props) {
     );
 
     return (
-        <Box>
-            <Typography variant="h6" textAlign="center">Índices</Typography>
+        <Box >
+            <Typography variant="h6" textAlign="center" mt={1}>Índices</Typography>
             <Box display="flex" justifyContent="center" mb={1}>
                 <Divider sx={{ backgroundColor: '#28508E', width: '100%' }} />
             </Box>

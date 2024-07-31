@@ -4,25 +4,20 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import { UserContext } from "../../contexts/UserContext";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
-import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
 
 export default function MenuUsuario() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const { logout } = useContext(UserContext);
 
-    const navigate = useNavigate();
-
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -52,14 +47,6 @@ export default function MenuUsuario() {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-                <Link to="/perfil/">
-                    <MenuItem onClick={handleClose}>
-                        <Avatar /> Perfil
-                    </MenuItem>
-                </Link>
-
-                <Divider />
-
                 <MenuItem onClick={() => logout()}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
