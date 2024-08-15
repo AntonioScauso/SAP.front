@@ -70,9 +70,9 @@ export default function Indices(props) {
                 <Divider sx={{ backgroundColor: '#28508E', width: '100%' }} />
             </Box>
             <Box flexGrow={1} display="flex" flexDirection="column" justifyContent="space-around">
-                {renderIndiceSection("Índice de costo de construcción", "ICC", indice1, setIndice1)}
-                {renderIndiceSection("Índice de construcción del colegio de arquitectos de Córdoba", "ICCAC", indice2, setIndice2)}
-                {renderIndiceSection("Índice de costo de la construcción de galpones", "ICCG", indice3, setIndice3)}
+                {renderIndiceSection("Costo de construcción", "ICC", indice1, setIndice1)}
+                {renderIndiceSection("Costo de construcción de la provincia de Córdoba", "ICCAC", indice2, setIndice2)}
+                {renderIndiceSection("Costo de construcción del colegio de arquitectos de Córdoba", "ICCG", indice3, setIndice3)}
             </Box>
 
             <Popover
