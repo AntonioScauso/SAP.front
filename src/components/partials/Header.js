@@ -41,7 +41,13 @@ const Header = () => {
                 textAlign: 'center',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis'
+                textOverflow: 'ellipsis',
+                fontSize: {
+                  xs: '0.70rem',  // Extra-small devices
+                  sm: '0.75rem',     // Small devices
+                  md: '1.25rem',  // Medium devices
+                  lg: '1.5rem',   // Large devices
+                },
               }}
             >
               Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba

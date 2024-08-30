@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Grid, TextField, InputAdornment, Typography, Box } from "@mui/material";
+import { Grid, TextField, InputAdornment, Typography, Box, useMediaQuery } from "@mui/material";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const isMobile = useMediaQuery('(max-width:600px)');
 
     const usuarioRef = useRef();
 
@@ -82,6 +83,146 @@ export default function LoginPage() {
         };
     },);
 
+    const renderLoginForm = () => (
+        <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: '100%', maxWidth: '400px' }}
+        >
+            <TextField
+                ref={usuarioRef}
+                error={loginError}
+                label="Usuario"
+                variant="outlined"
+                value={usuario}
+                fullWidth
+                sx={{
+                    mb: 3,
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: isMobile ? '#28508E' : 'white',
+                        },
+                        '&:hover fieldset': {
+                            borderColor: isMobile ? '#28508E' : 'white'
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: isMobile ? '#28508E' : 'white'
+                        }
+                    },
+                    '& .MuiInputLabel-root': {
+                        color: isMobile ? '#28508E' : 'white'
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                        color: isMobile ? '#28508E' : 'white'
+                    },
+                    '& .MuiOutlinedInput-input': {
+                        color: isMobile ? '#28508E' : 'white'
+                    },
+                    '& .MuiFormHelperText-root': {
+                        color: isMobile ? '#28508E' : 'white'
+                    }
+                }}
+                onChange={handleUsuarioChange}
+            />
+            <TextField
+                error={loginError}
+                value={contraseña}
+                label="Contraseña"
+                variant="outlined"
+                fullWidth
+                sx={{
+                    mb: 3,
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: isMobile ? '#28508E' : 'white'
+                        },
+                        '&:hover fieldset': {
+                            borderColor: isMobile ? '#28508E' : 'white'
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: isMobile ? '#28508E' : 'white'
+                        },
+                    },
+                    '& .MuiInputLabel-root': {
+                        color: isMobile ? '#28508E' : 'white'
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                        color: isMobile ? '#28508E' : 'white'
+                    },
+                    '& .MuiOutlinedInput-input': {
+                        color: isMobile ? '#28508E' : 'white'
+                    },
+                    '& .MuiFormHelperText-root': {
+                        color: isMobile ? '#28508E' : 'white'
+                    }
+                }}
+                onChange={handleContraseñaChange}
+                type={showPassword ? 'text' : 'password'}
+                helperText={loginError ? "Usuario o contraseña incorrectos" : ""}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            {showPassword ? (
+                                <VisibilityOffIcon onClick={handleTogglePasswordVisibility} style={{ cursor: 'pointer', color: isMobile ? '#28508E' : 'white' }} />
+                            ) : (
+                                <VisibilityIcon onClick={handleTogglePasswordVisibility} style={{ cursor: 'pointer', color: isMobile ? '#28508E' : 'white' }} />
+                            )}
+                        </InputAdornment>
+                    ),
+                }}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter' && usuario && contraseña) {
+                        handlePostLogin();
+                    }
+                }}
+            />
+            <BotonLoading
+                funcion={handlePostLogin}
+                state={usuario === "" || contraseña === ""}
+                loading={loading}
+                color={!isMobile ? 'white' : '#28508E'}
+                colorLetra={!isMobile ? '#28508E' : 'white'}
+                sx={{ width: '100%', mt: 2, mb: 8 }}
+            >
+                Iniciar Sesión
+            </BotonLoading>
+        </Grid>
+    );
+
+    if (isMobile) {
+        return (
+            <Box sx={{
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '10px',
+            }}>
+                <img
+                    src={LogoColegio}
+                    alt="Logo Colegio"
+                    style={{
+                        width: '100%',
+
+                    }}
+                />
+                <Typography variant="h5" sx={{ mb: 4, fontWeight: 'bold', color: '#28508E', textAlign: 'center' }}>
+                    Sistema de Consulta de Valores
+                </Typography>
+                {renderLoginForm()}
+                <Typography variant="body2" sx={{ color: '#28508E', textAlign: 'center', mt: 2 }}>
+                    Este sistema es de uso exclusivo para los matriculados del Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#28508E', textAlign: 'center', mt: 2 }}>
+                    Ley 7191
+                </Typography>
+            </Box>
+        );
+    }
+
     return (
         <Box sx={{ display: 'flex', height: '100vh' }}>
             {/* Mitad izquierda */}
@@ -92,14 +233,14 @@ export default function LoginPage() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '40px',
-                position: 'relative',  // Añadido para posicionar el logo absolutamente
-                overflow: 'hidden',    // Para asegurar que el logo no se salga del contenedor
+                position: 'relative',
+                overflow: 'hidden',
             }}>
                 <img
                     src={LogoColegio}
                     alt="Logo Colegio"
                     style={{
-                        width: '700px',
+                        width: '100%',
                         position: 'absolute',
                         top: -85,
                         left: '50%',
@@ -125,12 +266,14 @@ export default function LoginPage() {
                     fontSize: '1.2rem',
                     textAlign: 'center',
                     lineHeight: 1.6,
-                    marginTop: '20px',
                 }}>
                     <Typography variant="h5" sx={{ mb: 2, color: '#28508E', fontWeight: 'bold' }}>
                         Sistema de Consulta de Valores
                     </Typography>
                     Este sistema es de uso exclusivo para los matriculados del Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba
+                </Typography>
+                <Typography variant="body1" sx={{ color: '#28508E', textAlign: 'center', mb: 10 }}>
+                    Ley 7191
                 </Typography>
             </Box>
 
@@ -150,114 +293,8 @@ export default function LoginPage() {
                 <Typography variant="body1" sx={{ mb: 4, textAlign: 'center', color: 'white' }} >
                     Por favor, ingrese sus credenciales para acceder al Sistema de Tasación otorgado por el Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba.
                 </Typography>
-                <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{ width: '100%', maxWidth: '400px' }}
-                >
-                    <TextField
-                        ref={usuarioRef}
-                        error={loginError}
-                        label="Usuario"
-                        variant="outlined"
-                        value={usuario}
-                        fullWidth
-                        sx={{
-                            mb: 3,
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: 'white',
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: 'white',
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: 'white',
-                                }
-                            },
-                            '& .MuiInputLabel-root': {
-                                color: 'white',
-                            },
-                            '& .MuiInputLabel-root.Mui-focused': {
-                                color: 'white',
-                            },
-                            '& .MuiOutlinedInput-input': {
-                                color: 'white',
-                            },
-                            '& .MuiFormHelperText-root': {
-                                color: 'white',
-                            }
-                        }}
-                        onChange={handleUsuarioChange}
-                    />
-                    <TextField
-                        error={loginError}
-                        value={contraseña}
-                        label="Contraseña"
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                            mb: 3,
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: 'white',
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: 'white',
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: 'white',
-                                },
-                            },
-                            '& .MuiInputLabel-root': {
-                                color: 'white',
-                            },
-                            '& .MuiInputLabel-root.Mui-focused': {
-                                color: 'white',
-                            },
-                            '& .MuiOutlinedInput-input': {
-                                color: 'white',
-                            },
-                            '& .MuiFormHelperText-root': {
-                                color: 'white',
-                            }
-                        }}
-                        onChange={handleContraseñaChange}
-                        type={showPassword ? 'text' : 'password'}
-                        helperText={loginError ? "Usuario o contraseña incorrectos" : ""}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    {showPassword ? (
-                                        <VisibilityOffIcon onClick={handleTogglePasswordVisibility} style={{ cursor: 'pointer', color: 'white' }} />
-                                    ) : (
-                                        <VisibilityIcon onClick={handleTogglePasswordVisibility} style={{ cursor: 'pointer', color: 'white' }} />
-                                    )}
-                                </InputAdornment>
-                            ),
-                        }}
-                        onKeyDown={(event) => {
-                            if (event.key === 'Enter' && usuario && contraseña) {
-                                handlePostLogin();
-                            }
-                        }}
-                    />
-                    <BotonLoading
-                        funcion={handlePostLogin}
-                        state={usuario === "" || contraseña === ""}
-                        loading={loading}
-                        color={"white"}
-                        sx={{ width: '100%', mt: 2, mb: 8 }}
-                    >
-                        Iniciar Sesión
-                    </BotonLoading>
-                    <Typography variant="body1" sx={{ color: 'white' }}>
-                        Ley 7191
-                    </Typography>
-                </Grid>
+                {renderLoginForm()}
             </Box>
         </Box>
-    )
+    );
 }
