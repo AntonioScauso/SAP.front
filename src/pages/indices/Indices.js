@@ -65,7 +65,7 @@ export default function Indices(props) {
 
     return (
         <Box >
-            <Typography variant="h6" textAlign="center" mt={1}>Índices</Typography>
+            <Typography variant="h6" textAlign="center" mt={1}>Costos</Typography>
             <Box display="flex" justifyContent="center" mb={1}>
                 <Divider sx={{ backgroundColor: '#28508E', width: '100%' }} />
             </Box>

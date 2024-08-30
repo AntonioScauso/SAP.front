@@ -6,9 +6,10 @@ import CustomDataGrid from "../../components/CustomDataGrid";
 import { esES } from "@mui/material/locale";
 import useFetch, { host } from "../../utils/Fetch";
 import LogoColegio from "../../imagenes/LogoColegio.png";
-import Indices from "./Indices";
+import Indices from "../indices/Indices";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import Sugerencias from "../sugerencias/Sugerencias";
 
 export default function Tasaciones() {
     const [circunscripciones, setCircunscripciones] = useState(null);
@@ -295,15 +296,20 @@ export default function Tasaciones() {
                                 }}
                             />
                         </Box>
-                        <Box display="flex" justifyContent="center" alignItems="center" gap={4} p={2}
+                        <Box display="flex" flexDirection="column" alignItems="center" gap={2} p={2}
                             border={1} borderColor="primary.main" borderRadius={2}>
-                            <Typography variant="body1">
-                                Dólar Oficial: ${dolarOficial}
-                            </Typography>
-                            <Typography variant="body1">
-                                Dólar MEP: ${dolarMep}
-                            </Typography>
+                            <Box display="flex" justifyContent="center" alignItems="center" gap={4}>
+                                <Typography variant="body1">
+                                    Dólar Oficial: ${dolarOficial}
+                                </Typography>
+                                <Typography variant="body1">
+                                    Dólar MEP: ${dolarMep}
+                                </Typography>
+                            </Box>
                         </Box>
+                        <Typography variant="body1" textAlign="center">
+                            Dólar promedio del último mes.
+                        </Typography>
                     </Box>
                     :
                     <Box flexGrow={1} display="flex" alignItems="center" justifyContent="center">
@@ -311,6 +317,8 @@ export default function Tasaciones() {
                     </Box>
                 }
             </Box>
+            <Sugerencias />
+
         </Box>
     );
 }

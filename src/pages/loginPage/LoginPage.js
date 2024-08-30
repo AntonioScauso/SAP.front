@@ -99,14 +99,13 @@ export default function LoginPage() {
                     src={LogoColegio}
                     alt="Logo Colegio"
                     style={{
-                        width: '80%',
+                        width: '700px',
                         position: 'absolute',
-                        top: -70,    // Ajusta este valor para mover el logo más arriba o abajo
+                        top: -85,
                         left: '50%',
                         transform: 'translateX(-50%)',
                     }}
                 />
-
                 <Box sx={{
                     flex: 1,
                     display: 'flex',
@@ -114,21 +113,23 @@ export default function LoginPage() {
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: '100%',
-                    marginTop: '15vh',  // Ajusta este valor para dar espacio al logo
+                    marginTop: '20vh',
                 }}>
                     <Lottie
                         animationData={Animation}
-                        style={{ width: 250, height: 250 }}  // Aumenté el tamaño, ajusta según necesites
+                        style={{ width: 250, height: 250 }}
                     />
                 </Box>
-
                 <Typography variant="body1" color="black" sx={{
-                    maxWidth: '80%',
+                    width: '50vw',
                     fontSize: '1.2rem',
                     textAlign: 'center',
                     lineHeight: 1.6,
                     marginTop: '20px',
                 }}>
+                    <Typography variant="h5" sx={{ mb: 2, color: '#28508E', fontWeight: 'bold' }}>
+                        Sistema de Consulta de Valores
+                    </Typography>
                     Este sistema es de uso exclusivo para los matriculados del Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba
                 </Typography>
             </Box>
@@ -248,10 +249,13 @@ export default function LoginPage() {
                         state={usuario === "" || contraseña === ""}
                         loading={loading}
                         color={"white"}
-                        sx={{ width: '100%', mt: 2 }}
+                        sx={{ width: '100%', mt: 2, mb: 8 }}
                     >
                         Iniciar Sesión
                     </BotonLoading>
+                    <Typography variant="body1" sx={{ color: 'white' }}>
+                        Ley 7191
+                    </Typography>
                 </Grid>
             </Box>
         </Box>
