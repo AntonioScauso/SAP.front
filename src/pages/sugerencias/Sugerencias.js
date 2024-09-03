@@ -1,95 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Box, Drawer, Typography, IconButton, Button, Modal, TextField, Autocomplete, FormControl } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Drawer, Typography, IconButton, Button, Modal, TextField, } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import useFetch, { host } from "../../utils/Fetch";
+import BotonLoading from '../../components/BotonLoading';
 
-const Sugerencias = () => {
+export default function Sugerencias(props) {
+    const { zonaEnTabla } = props;
     const [sugerencias, setSugerencias] = useState([]);
     const [open, setOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [circunscripciones, setCircunscripciones] = useState(null);
-    const [circunscripcion, setCircunscripcion] = useState(null);
-    const [localidad, setLocalidad] = useState(null);
-    const [barrio, setBarrio] = useState(null);
-    const [zona, setZona] = useState(null);
     const [sugerencia, setSugerencia] = useState('');
+    const [fecha, setFecha] = useState('');
+    const [precio, setPrecio] = useState('');
+    const [colegiado,] = useState('');
 
-    const localidadRef = useRef(null);
-    const barrioRef = useRef(null);
-    const zonaRef = useRef(null);
-
-    const { getFetch } = useFetch();
+    const [loading, setLoading] = useState(false);
+    const { getFetch, postFetch } = useFetch();
     const url = `${host}tasacion/`;
 
     useEffect(() => {
-        getFetch(url + 'data/', true)
+        getFetch(url + 'sugerencias/?zona=' + zonaEnTabla.id, true)
             .then(data => {
-                setCircunscripciones(data.circunscripciones);
+                setSugerencias(data.data);
+            })
+            .catch(error => {
+                console.log(error);
             });
-        //agregar get de sugerencias
-        setSugerencias([
-            {
-                circunscripcion: 'Circunscripción 1',
-                localidad: 'Localidad 1',
-                barrio: 'Barrio 1',
-                zona: 'Zona 1',
-                texto: 'Muy buena zona, tranquila y segura.',
-            },
-            {
-                circunscripcion: 'Circunscripción 2',
-                localidad: 'Localidad 2',
-                barrio: 'Barrio 2',
-                zona: 'Zona 2',
-                texto: 'Zona muy peligrosa, no se recomienda pasar por allí.',
-            },
-            {
-                circunscripcion: 'Circunscripción 3',
-                localidad: 'Localidad 3',
-                barrio: 'Barrio 3',
-                zona: 'Zona 3',
-                texto: 'Zona muy transitada, mucho ruido.',
-            },
-        ]);
-    }, []);
-
-    useEffect(() => {
-        if (circunscripcion) {
-            const selectedCircunscripcion = circunscripciones.find(circ => circ.nombre === circunscripcion);
-            if (selectedCircunscripcion && selectedCircunscripcion.localidades.length === 1) {
-                setLocalidad(selectedCircunscripcion.localidades[0].nombre);
-            } else {
-                setTimeout(() => {
-                    if (localidadRef.current) {
-                        localidadRef.current.focus();
-                    }
-                }, 0);
-            }
-        }
-        if (localidad) {
-            const selectedLocalidad = circunscripciones.find(circ => circ.nombre === circunscripcion).localidades.find(loc => loc.nombre === localidad);
-            if (selectedLocalidad.barrios.length === 1) {
-                setBarrio(selectedLocalidad.barrios[0].nombre);
-            } else {
-                setTimeout(() => {
-                    if (barrioRef.current) {
-                        barrioRef.current.focus();
-                    }
-                }, 0);
-            }
-        }
-        if (barrio) {
-            const selectedBarrio = circunscripciones.find(circ => circ.nombre === circunscripcion).localidades.find(loc => loc.nombre === localidad).barrios.find(bar => bar.nombre === barrio);
-            if (selectedBarrio.zonas.length === 1) {
-                setZona(selectedBarrio.zonas[0]);
-            } else {
-                setTimeout(() => {
-                    if (zonaRef.current) {
-                        zonaRef.current.focus();
-                    }
-                }, 0);
-            }
-        }
-    }, [circunscripcion, circunscripciones, localidad, barrio]);
+    }, [zonaEnTabla]);
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -101,17 +38,38 @@ const Sugerencias = () => {
 
     const handleModalClose = () => {
         setModalOpen(false);
-        setCircunscripcion(null);
-        setLocalidad(null);
-        setBarrio(null);
-        setZona(null);
         setSugerencia('');
+        setFecha('');
+        setPrecio('');
     };
 
     const handleSubmit = (event) => {
+        setLoading(true);
         event.preventDefault();
-        // Aquí iría la lógica para enviar la sugerencia
-        console.log({ circunscripcion, localidad, barrio, zona: zona?.nombre, sugerencia });
+
+        const data = {
+            zona: zonaEnTabla.id,
+            observacion: sugerencia,
+            fecha: fecha,
+            precio: parseInt(precio),
+        };
+
+        postFetch(url + 'sugerencias/', data, true)
+            .then(() => {
+                getFetch(url + 'sugerencias/?zona=' + zonaEnTabla.id, true)
+                    .then(data => {
+                        setSugerencias(data.data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
         handleModalClose();
     };
 
@@ -161,7 +119,7 @@ const Sugerencias = () => {
                     <Typography variant="h6" color="#28508E" gutterBottom>
                         Sugerencias
                     </Typography>
-                    {sugerencias.map((sugerencia, index) => (
+                    {Array.isArray(sugerencias) && sugerencias.length > 0 ? sugerencias.map((sugerencia, index) => (
                         <Box
                             key={index}
                             sx={{
@@ -172,22 +130,22 @@ const Sugerencias = () => {
                             }}
                         >
                             <Typography variant="body1" gutterBottom>
-                                <strong>Circunscripción:</strong> {sugerencia.circunscripcion}
+                                <strong>Zona:</strong> {zonaEnTabla.nombre}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                <strong>Localidad:</strong> {sugerencia.localidad}
+                                <strong>Fecha:</strong> {sugerencia.fecha}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                <strong>Barrio:</strong> {sugerencia.barrio}
+                                <strong>Precio:</strong> {sugerencia.precio}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                <strong>Zona:</strong> {sugerencia.zona}
+                                <strong>Observación:</strong> {sugerencia.observacion}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                <strong>Sugerencia:</strong> {sugerencia.texto}
+                                <strong>Colegiado:</strong> {sugerencia.colegiado}
                             </Typography>
                         </Box>
-                    ))}
+                    )) : <Typography variant="body1" gutterBottom>No hay sugerencias para esta zona</Typography>}
                     <Button
                         variant="contained"
                         onClick={handleModalOpen}
@@ -201,7 +159,6 @@ const Sugerencias = () => {
                     >
                         Agregar Sugerencia
                     </Button>
-                    <div style={{ color: 'white', maxHeight: '2px' }}>.</div>
                 </Box>
             </Drawer>
             <Modal
@@ -225,67 +182,6 @@ const Sugerencias = () => {
                         Agregar Sugerencia
                     </Typography>
                     <form onSubmit={handleSubmit}>
-                        <FormControl fullWidth margin="normal">
-                            <Autocomplete
-                                options={circunscripciones?.map(circunscripcion => circunscripcion.nombre) || []}
-                                value={circunscripcion}
-                                renderInput={(params) => (
-                                    <TextField {...params} label="Circunscripción" />
-                                )}
-                                openOnFocus
-                                onChange={(event, newValue) => {
-                                    setCircunscripcion(newValue);
-                                    setLocalidad(null);
-                                    setBarrio(null);
-                                    setZona(null);
-                                }}
-                            />
-                        </FormControl>
-                        <FormControl fullWidth margin="normal">
-                            <Autocomplete
-                                options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.map(localidad => localidad.nombre) || []}
-                                value={localidad}
-                                openOnFocus
-                                disabled={circunscripcion === null}
-                                renderInput={(params) => (
-                                    <TextField {...params} label="Localidad" inputRef={localidadRef} />
-                                )}
-                                onChange={(event, newValue) => {
-                                    setLocalidad(newValue);
-                                    setBarrio(null);
-                                    setZona(null);
-                                }}
-                            />
-                        </FormControl>
-                        <FormControl fullWidth margin="normal">
-                            <Autocomplete
-                                options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.map(barrio => barrio.nombre) || []}
-                                value={barrio}
-                                disabled={localidad === null}
-                                openOnFocus
-                                renderInput={(params) => (
-                                    <TextField {...params} label="Barrio" inputRef={barrioRef} />
-                                )}
-                                onChange={(event, newValue) => {
-                                    setBarrio(newValue);
-                                    setZona(null);
-                                }}
-                            />
-                        </FormControl>
-                        <FormControl fullWidth margin="normal">
-                            <Autocomplete
-                                options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.map(zona => zona.nombre) || []}
-                                value={zona?.nombre || ''}
-                                disabled={barrio === null}
-                                openOnFocus
-                                renderInput={(params) => (
-                                    <TextField {...params} label="Zona" inputRef={zonaRef} />
-                                )}
-                                onChange={(event, newValue) => {
-                                    setZona(circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.find(zon => zon.nombre === newValue));
-                                }}
-                            />
-                        </FormControl>
                         <TextField
                             fullWidth
                             margin="normal"
@@ -295,24 +191,35 @@ const Sugerencias = () => {
                             value={sugerencia}
                             onChange={(e) => setSugerencia(e.target.value)}
                         />
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            sx={{
-                                mt: 2,
-                                backgroundColor: '#28508E',
-                                '&:hover': {
-                                    backgroundColor: '#1A365D',
-                                }
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Fecha"
+                            type="date"
+                            value={fecha}
+                            onChange={(e) => setFecha(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
                             }}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Precio"
+                            type="number"
+                            value={precio}
+                            onChange={(e) => setPrecio(e.target.value)}
+                        />
+                        <BotonLoading
+                            funcion={handleSubmit}
+                            state={!(sugerencia && fecha && precio)}
+                            loading={loading}
                         >
                             Enviar Sugerencia
-                        </Button>
+                        </BotonLoading>
                     </form>
                 </Box>
             </Modal>
         </>
     );
 };
-
-export default Sugerencias;

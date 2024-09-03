@@ -12,7 +12,6 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import Sugerencias from "../sugerencias/Sugerencias";
 
 const Tasaciones = () => {
-    // State variables
     const [circunscripciones, setCircunscripciones] = useState(null);
     const [circunscripcion, setCircunscripcion] = useState(null);
     const [localidad, setLocalidad] = useState(null);
@@ -27,26 +26,29 @@ const Tasaciones = () => {
     const [indice2, setIndice2] = useState('');
     const [indice3, setIndice3] = useState('');
 
-    // Refs
     const localidadRef = useRef(null);
     const barrioRef = useRef(null);
     const zonaRef = useRef(null);
 
-    // Hooks
     const { getFetch } = useFetch();
     const isMobile = useMediaQuery('(max-width:600px)');
 
-    // Constants
     const url = `${host}tasacion/`;
 
-    // Effects
     useEffect(() => {
         getFetch(url + 'data/', true)
             .then(data => {
                 setCircunscripciones(data.circunscripciones);
-                setIndice1([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-                setIndice2([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
-                setIndice3([21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
+            });
+        getFetch(url + 'historialIndice/')
+            .then(responseData => {
+                const data = responseData.data;
+                setIndice1(data[0]?.historial || []);
+                setIndice2(data[1]?.historial || []);
+                setIndice3(data[2]?.historial || []);
+            })
+            .catch(err => {
+                console.error(err);
             });
     }, []);
 
@@ -62,7 +64,6 @@ const Tasaciones = () => {
         }
     }, [circunscripcion, localidad, barrio]);
 
-    // Helper functions
     const handleCircunscripcionChange = () => {
         const selectedCircunscripcion = circunscripciones.find(circ => circ.nombre === circunscripcion);
         if (selectedCircunscripcion && selectedCircunscripcion.localidades.length === 1) {
@@ -227,88 +228,87 @@ const Tasaciones = () => {
             display: 'flex',
             flexDirection: 'column',
             height: '100vh',
-            padding: '10px',
-            overflow: 'auto'
+            width: '100vw',
+            overflowY: 'auto',
         }}>
-            {renderAutocompletes()}
-            <Grid container justifyContent="center" style={{ marginTop: '20px', marginLeft: '15%' }}>
-                <Grid item xs={6} >
-                    <BotonLoading
-                        loading={loading}
-                        funcion={() => buscarZona(zona)}
-                        state={zona === null}
-                        colorLetra='white'
-                        sx={{
-                            height: '35px',
-                            backgroundColor: '#28508E',
-                            '&:hover': { backgroundColor: '#28508E' },
-                            width: '100%', marginRight: '15%'
-                        }}
-                        endIcon={<QueryStatsIcon style={{ fontSize: '1.5rem' }} />}
-                    >
-                        Consultar
-                    </BotonLoading>
+            <Box sx={{
+                padding: '10px',
+                overflowY: 'auto',
+                height: '100%',
+                width: '90%',
+            }}>
+                {renderAutocompletes()}
+                <Grid container justifyContent="center" style={{ marginTop: '20px' }}>
+                    <Grid item xs={6} >
+                        <BotonLoading
+                            loading={loading}
+                            funcion={() => buscarZona(zona)}
+                            state={zona === null}
+                            colorLetra='white'
+                            sx={{
+                                height: '35px',
+                                backgroundColor: '#28508E',
+                                '&:hover': { backgroundColor: '#28508E' },
+                                width: '100%',
+                            }}
+                            endIcon={<QueryStatsIcon style={{ fontSize: '1.5rem' }} />}
+                        >
+                            Consultar
+                        </BotonLoading>
+                    </Grid>
+                    <Grid item xs={6} container justifyContent="center">
+                        <IconButton
+                            onClick={handleClear}
+                            color="primary"
+                            aria-label="clear fields"
+                            style={{ color: '#28508E' }}
+                            disabled={circunscripcion === null && zonaEnTabla === null}
+                        >
+                            <BackspaceIcon />
+                        </IconButton>
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <IconButton
-                        onClick={handleClear}
-                        color="primary"
-                        aria-label="clear fields"
-                        style={{ color: '#28508E' }}
-                        disabled={circunscripcion === null && zonaEnTabla === null}
-                    >
-                        <BackspaceIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
-            {precios ? (
-                <Box mt={2}>
-                    <CustomDataGrid
-                        rows={rows}
-                        columns={columns}
-                        pageSize={3}
-                        hideFooter
-                        disableRowSelectionOnClick
-                        localeText={esES.components.MuiDataGrid?.defaultProps?.localeText}
-                        slots={{ toolbar: CustomGridToolBar }}
-                        getRowClassName={(params) => {
-                            return params.row.id === 3 ? 'dolarMEP-row' : params.row.id === 2 ? 'dolarOficial-row' : 'pesos-row';
-                        }}
-                        sx={{
-                            height: 'auto',
-                            fontSize: '1em',
-                            backgroundColor: '#f0f0f0',
-                            '& .MuiDataGrid-row': {
-                                '&.dolarMEP-row': {
-                                    backgroundColor: 'rgba(33, 150, 243, 0.3)',
-                                },
-                                '&.dolarOficial-row': {
-                                    backgroundColor: 'rgba(76, 175, 80, 0.3)',
-                                },
-                                '&.pesos-row': {
-                                    backgroundColor: 'rgba(255, 152, 0, 0.3)',
-                                }
-                            }
-                        }}
-                    />
-                    <Box display="flex" flexDirection="column" alignItems="center" gap={2} p={2}
-                        border={1} borderColor="primary.main" borderRadius={2} mt={2}>
-                        <Typography variant="body2">
-                            Dólar Oficial: ${dolarOficial}
+                {precios ? (
+                    <Box mt={2}>
+                        <Typography variant='h6' style={{ marginBottom: '10px', textAlign: 'center' }}>
+                            Precios de la zona: {zonaEnTabla?.nombre}
                         </Typography>
-                        <Typography variant="body2">
-                            Dólar MEP: ${dolarMep}
+                        {[
+                            { title: 'Pesos', data: { min: precios.precioMin, max: precios.precioMax, avg: precios.promedioPesos }, color: 'rgba(255, 152, 0, 0.3)' },
+                            { title: 'Dólar Oficial', data: { min: precios.precioMinDolarOficial, max: precios.precioMaxDolarOficial, avg: precios.promedioDolarOficial }, color: 'rgba(76, 175, 80, 0.3)' },
+                            { title: 'Dólar MEP', data: { min: precios.precioMinDolarMep, max: precios.precioMaxDolarMep, avg: precios.promedioDolarMep }, color: 'rgba(33, 150, 243, 0.3)' }
+                        ].map((item, index) => (
+                            <Box key={index} sx={{
+                                backgroundColor: item.color,
+                                padding: '10px',
+                                marginBottom: '10px',
+                                borderRadius: '5px'
+                            }}>
+                                <Typography variant="subtitle1" fontWeight="bold">{item.title}</Typography>
+                                <Typography>Precio Mínimo: {item.data.min}</Typography>
+                                <Typography>Precio Máximo: {item.data.max}</Typography>
+                                <Typography>Promedio: {item.data.avg}</Typography>
+                            </Box>
+                        ))}
+                        <Box display="flex" flexDirection="column" alignItems="center" gap={2} p={2}
+                            border={1} borderColor="primary.main" borderRadius={2} mt={2}>
+                            <Typography variant="body2">
+                                Dólar Oficial: ${dolarOficial}
+                            </Typography>
+                            <Typography variant="body2">
+                                Dólar MEP: ${dolarMep}
+                            </Typography>
+                        </Box>
+                        <Typography variant="body2" textAlign="center" mt={1} mb={2}>
+                            Dólar promedio del último mes.
                         </Typography>
                     </Box>
-                    <Typography variant="body2" textAlign="center" mt={1}>
-                        Dólar promedio del último mes.
-                    </Typography>
-                </Box>
-            ) : (
-                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-                    <img src={LogoColegio} alt="Logo Colegio" style={{ maxWidth: '140%' }} />
-                </Box>
-            )}
+                ) : (
+                    <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                        <img src={LogoColegio} alt="Logo Colegio" style={{ maxWidth: '100%' }} />
+                    </Box>
+                )}
+            </Box>
         </Box>
     );
 
@@ -325,16 +325,16 @@ const Tasaciones = () => {
                     },
                 }}>
                 <Indices indice1={indice1} setIndice1={setIndice1} indice2={indice2} setIndice2={setIndice2} indice3={indice3} setIndice3={setIndice3} />
-                <div style={{ paddingBottom: '30px', color: '#E0E0E0' }} > .</div>
+                <div style={{ paddingBottom: '30px', color: '#E0E0E0' }} >.</div>
             </Box>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px' }} />
 
             <Box flexGrow={1} display="flex" flexDirection="column" overflow="auto" padding="20px">
-                <Grid container direction="column" spacing={2} mt={1}>
+                <Grid container direction="column" mt={1}>
                     <Grid container spacing={2} justifyContent="center" alignItems="center" gap={2}>
                         {renderAutocompletes()}
                     </Grid>
-                    <Grid container justifyContent="center" style={{ marginTop: '20px' }}>
+                    <Grid container justifyContent="center" mt={1}>
                         <Grid item xs={2}>
                             <BotonLoading
                                 loading={loading}
@@ -368,6 +368,7 @@ const Tasaciones = () => {
                                 }}
                                 sx={{
                                     height: '100%',
+                                    maxHeight: '45vh',
                                     fontSize: '1.2em',
                                     backgroundColor: '#f0f0f0',
                                     '& .MuiDataGrid-row': {
@@ -398,6 +399,7 @@ const Tasaciones = () => {
                         <Typography variant="body1" textAlign="center">
                             Dólar promedio del último mes.
                         </Typography>
+                        <Sugerencias zonaEnTabla={zonaEnTabla} />
                     </Box>
                     :
                     <Box flexGrow={1} display="flex" alignItems="center" justifyContent="center">
@@ -405,7 +407,6 @@ const Tasaciones = () => {
                     </Box>
                 }
             </Box>
-            <Sugerencias />
         </Box>
     );
 

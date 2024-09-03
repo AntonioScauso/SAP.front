@@ -7,9 +7,9 @@ export default function Indices(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedIndice, setSelectedIndice] = useState(null);
 
-    const handleClick = (event, indice) => {
+    const handleClick = (event, historial) => {
         setAnchorEl(event.currentTarget);
-        setSelectedIndice(indice);
+        setSelectedIndice(historial);
     };
 
     const handleClose = () => {
@@ -20,15 +20,21 @@ export default function Indices(props) {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
+    const getLastActiveValue = (historial) => {
+        if (historial && historial.length > 0) {
+            return historial[historial.length - 1].valor;
+        }
+        return '';
+    };
+
     const renderIndiceSection = (label, shortLabel, indice, setIndice) => (
-        <Box display="flex" flexDirection="column" mb={2} gap={1} paddingLeft={2} >
+        <Box display="flex" flexDirection="column" mb={2} gap={1} paddingLeft={2}>
             <Typography variant="subtitle2">{label}</Typography>
             <TextField
                 label={shortLabel}
-                value={indice[indice.length - 1] || ''}
+                value={getLastActiveValue(indice)}
                 disabled
                 size="small"
-                onChange={(e) => setIndice([...indice.slice(0, -1), e.target.value])}
                 sx={{
                     width: '80%',
                     '& .MuiInputBase-root': {
@@ -64,7 +70,7 @@ export default function Indices(props) {
     );
 
     return (
-        <Box >
+        <Box>
             <Typography variant="h6" textAlign="center" mt={1}>Costos</Typography>
             <Box display="flex" justifyContent="center" mb={1}>
                 <Divider sx={{ backgroundColor: '#28508E', width: '100%' }} />
@@ -86,9 +92,9 @@ export default function Indices(props) {
                 }}
             >
                 <List>
-                    {selectedIndice && selectedIndice.slice().reverse().map((valor, index) => (
+                    {selectedIndice && selectedIndice.slice().reverse().map((item, index) => (
                         <ListItem key={index}>
-                            <ListItemText primary={`Mes ${selectedIndice.length - index}: ${valor}`} />
+                            <ListItemText primary={` ${item.mes}/${item['año']}: ${item.valor}`} />
                         </ListItem>
                     ))}
                 </List>
