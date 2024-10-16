@@ -318,7 +318,7 @@ const Tasaciones = () => {
                 marginTop={-3} ml={-3} overflow="auto" height="100%" style={{ backgroundColor: '#E0E0E0' }}
                 sx={{
                     '&::-webkit-scrollbar': {
-                        width: '0.4em',
+                        width: '0.2em',
                     },
                     '&::-webkit-scrollbar-thumb': {
                         backgroundColor: '#28508E',

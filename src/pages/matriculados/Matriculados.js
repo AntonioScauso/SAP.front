@@ -89,48 +89,6 @@ export default function Matriculados() {
                 slots={{ toolbar: CustomGridToolBar }}
                 sx={{ height: '90vh' }}
             />
-            <Dialog
-                open={openDialog}
-                onClose={() => setOpenDialog(false)}
-            >
-                <Grid
-                    container
-                    alignItems="center"
-                    justifyContent="center"
-                    flexDirection="column"
-                    xs={12}
-                    style={{ gap: "20px", textAlign: "center", padding: "50px", }}
-                >
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        style={{
-                            textAlign: "center"
-                        }}
-                    >
-                        ¿Estás seguro de que deseas eliminar al matriculado?
-                    </Typography>
-                    <Grid
-                        item
-                        container
-                        xs={12}
-                        justifyContent="center"
-                        style={{ gap: "30px" }}
-                    >
-                        <Button variant="contained" color={"primary"}
-                            onClick={() => setOpenDialog(false)}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button variant="contained"
-                            style={{ backgroundColor: "red" }}
-                            onClick={() => handleDeleteMatriculado()}
-                        >
-                            Eliminar
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Dialog>
             <ModalMatriculado matriculados={matriculados} setMatriculados={setMatriculados} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </>
     )
