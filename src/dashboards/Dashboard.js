@@ -4,9 +4,13 @@ import PrivateRoute from "./PrivateRoute";
 import Tasaciones from "../pages/tasaciones/Tasaciones";
 import LoginPage from "../pages/loginPage/LoginPage";
 import Administracion from "../pages/administracion/Administracion";
+import Matriculados from "../pages/matriculados/Matriculados";
+import Perfil from "../pages/perfil/Perfil";
+import { useEffect, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export const usePaginas = () => {
-    const planes = ['2']
+    const { rol } = useContext(UserContext);
 
     const paginas = [
         {
@@ -16,9 +20,22 @@ export const usePaginas = () => {
             component: <Tasaciones />,
             componentUrl: "/tasaciones/"
         },
+        {
+            seccion: "perfil",
+            url: "/perfil/",
+            component: <Perfil />,
+            componentUrl: "/perfil/"
+        },
+        {
+            nombre: "Matriculados",
+            seccion: "matriculados",
+            url: "/matriculados/",
+            component: <Matriculados />,
+            componentUrl: "/matriculados/"
+        }
     ];
 
-    if (planes.includes('1')) {
+    if (rol === '9') {
         paginas.push({
             nombre: "Administracion",
             seccion: "administracion",

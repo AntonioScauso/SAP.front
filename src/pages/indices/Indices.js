@@ -76,9 +76,9 @@ export default function Indices(props) {
                 <Divider sx={{ backgroundColor: '#28508E', width: '100%' }} />
             </Box>
             <Box flexGrow={1} display="flex" flexDirection="column" justifyContent="space-around">
-                {renderIndiceSection("Costo de construcción", "ICC", indice1, setIndice1)}
-                {renderIndiceSection("Costo de construcción de la provincia de Córdoba", "ICCAC", indice2, setIndice2)}
-                {renderIndiceSection("Costo de construcción del colegio de arquitectos de Córdoba", "ICCG", indice3, setIndice3)}
+                {renderIndiceSection("Indice de costo de la construccion de la provincia de Córdoba", "ICC CBA", indice1, setIndice1)}
+                {renderIndiceSection("Indice de costo de la construccion del Colegio de Arquitectos", "ICCAC", indice2, setIndice2)}
+                {renderIndiceSection("Indice de costo de la construccion de galpones", "ICCG", indice3, setIndice3)}
             </Box>
 
             <Popover
@@ -94,7 +94,7 @@ export default function Indices(props) {
                 <List>
                     {selectedIndice && selectedIndice.slice().reverse().map((item, index) => (
                         <ListItem key={index}>
-                            <ListItemText primary={` ${item.mes}/${item['año']}: ${item.valor}`} />
+                            <ListItemText primary={` ${item.mes}/${item['año']} - $${item.valor}`} />
                         </ListItem>
                     ))}
                 </List>

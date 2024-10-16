@@ -21,6 +21,8 @@ export default function Sugerencias(props) {
     useEffect(() => {
         getFetch(url + 'sugerencias/?zona=' + zonaEnTabla.id, true)
             .then(data => {
+                console.log(data);
+
                 setSugerencias(data.data);
             })
             .catch(error => {
@@ -159,6 +161,7 @@ export default function Sugerencias(props) {
                     >
                         Agregar Sugerencia
                     </Button>
+                    <Typography sx={{ color: 'white' }}>.</Typography>
                 </Box>
             </Drawer>
             <Modal

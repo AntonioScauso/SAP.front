@@ -9,6 +9,7 @@ import { UserContext } from "../../contexts/UserContext";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { useContext } from "react";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
 export default function MenuUsuario() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -46,12 +47,22 @@ export default function MenuUsuario() {
                 onClick={handleClose}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+
             >
+                <MenuItem
+                    onClick={() => window.location.href = '/perfil'}
+                >
+                    <ListItemIcon>
+                        <AccountCircle fontSize="small" />
+                    </ListItemIcon>
+                    Cambiar Contraseña
+                </MenuItem>
                 <MenuItem onClick={() => logout()}>
+
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>
-                    Logout
+                    Cerrar Sesión
                 </MenuItem>
             </Menu>
         </React.Fragment>

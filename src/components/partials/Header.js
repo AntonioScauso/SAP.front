@@ -1,14 +1,16 @@
 import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import SideBar from "./SideBar";
 import MenuUsuario from "./MenuDeUsuario";
+import { UserContext } from "../../contexts/UserContext";
 
 const Header = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState('SAP');
 
-  const planes = ['2'];
+  const { rol } = useContext(UserContext);
+
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -18,12 +20,12 @@ const Header = () => {
     setSelectedPage(pageName);
   };
 
-  return (
+  return ( //cambiar a 2
     <>
       <AppBar position="static" style={{ backgroundColor: '#28508E' }}>
         <Toolbar style={{ height: '40px', padding: 0 }}>
           <Box display="flex" alignItems="center" width="100%">
-            {(planes.includes('1')) &&
+            {rol !== '123' &&
               <IconButton
                 onClick={toggleSideBar}
                 edge="start"
