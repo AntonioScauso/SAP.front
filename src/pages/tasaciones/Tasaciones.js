@@ -25,6 +25,7 @@ const Tasaciones = () => {
     const [indice1, setIndice1] = useState('');
     const [indice2, setIndice2] = useState('');
     const [indice3, setIndice3] = useState('');
+    const [historialesDolar, setHistorialesDolar] = useState(null);
 
     const localidadRef = useRef(null);
     const barrioRef = useRef(null);
@@ -39,6 +40,9 @@ const Tasaciones = () => {
         getFetch(url + 'data/', true)
             .then(data => {
                 setCircunscripciones(data.circunscripciones);
+            })
+            .catch(err => {
+                console.error(err);
             });
         getFetch(url + 'historialIndice/')
             .then(responseData => {
@@ -46,6 +50,13 @@ const Tasaciones = () => {
                 setIndice1(data[0]?.historial || []);
                 setIndice2(data[1]?.historial || []);
                 setIndice3(data[2]?.historial || []);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        getFetch(url + 'historialesDolar/', true)
+            .then(data => {
+                setHistorialesDolar(data);
             })
             .catch(err => {
                 console.error(err);
@@ -107,6 +118,9 @@ const Tasaciones = () => {
                 setPrecios(data);
                 setDolarOficial(data.dolarOficial);
                 setDolarMep(data.dolarMep);
+            })
+            .catch(err => {
+                console.error(err);
             })
             .finally(() => {
                 setLoading(false);
@@ -324,7 +338,7 @@ const Tasaciones = () => {
                         backgroundColor: '#28508E',
                     },
                 }}>
-                <Indices indice1={indice1} setIndice1={setIndice1} indice2={indice2} setIndice2={setIndice2} indice3={indice3} setIndice3={setIndice3} />
+                <Indices indice1={indice1} setIndice1={setIndice1} indice2={indice2} setIndice2={setIndice2} indice3={indice3} setIndice3={setIndice3} historialesDolar={historialesDolar} />
                 <div style={{ paddingBottom: '30px', color: '#E0E0E0' }} >.</div>
             </Box>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px' }} />
