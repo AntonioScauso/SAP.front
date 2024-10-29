@@ -170,8 +170,9 @@ export default function Indices(props) {
             </Box>
 
             <Box flexGrow={1} display="flex" flexDirection="column" justifyContent="space-around">
-                {renderIndiceSection("Costo de construcción de la provincia de Córdoba", "ICC CBA", indice1, setIndice1)}
+                {renderIndiceSection("", "ICC CBA", indice1, setIndice1)}
 
+                
                 <Box display="flex" justifyContent="center" mt={-1}>
                     <Checkbox checked={conCargaSocial} onClick={() => setConCargaSocial(!conCargaSocial)} />
                     <Typography sx={{
@@ -179,19 +180,19 @@ export default function Indices(props) {
                         fontSize: '0.8rem',
                     }}>Con carga social</Typography>
                 </Box>
-
                 {conCargaSocial ?
-                    renderIndiceSection("Costo de construcción del colegio de arquitectos de Cordoba", "ICCAC + CS", indice2, setIndice2)
+                    renderIndiceSection("", "ICCAC + CS", indice2, setIndice2)
                     :
-                    renderIndiceSection("Costo de construcción del colegio de arquitectos de Cordoba", "ICCAC", indice3, setIndice3)
+                    renderIndiceSection("", "ICCAC", indice3, setIndice3)
                 }
+                
 
                 <Typography variant="h6" textAlign="center" mt={2} mb={1}>
-                    Cotizaciones del Dólar e Inflación
+                    Cotizaciones
                 </Typography>
 
-                {renderDolarSection("Dólar MEP", "Cotización MEP", historialesDolar?.dolarMep)}
-                {renderDolarSection("Dólar Oficial", "Cotización Oficial", historialesDolar?.dolarOficial)}
+                {renderDolarSection("", "Cotización MEP", historialesDolar?.dolarMep)}
+                {renderDolarSection("", "Cotización Oficial", historialesDolar?.dolarOficial)}
                 {renderInflacionSection("Índice de Inflación", "Variación", historialesDolar?.indicesInflacion)}
             </Box>
 

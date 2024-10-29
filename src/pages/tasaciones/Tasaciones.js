@@ -165,65 +165,69 @@ const Tasaciones = () => {
     ];
 
     const renderAutocompletes = () => (
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
-            <Grid item xs={isMobile ? 6 : 'auto'}>
-                <Autocomplete
-                    options={circunscripciones?.map(circunscripcion => circunscripcion.nombre) || []}
-                    value={circunscripcion}
-                    sx={{ width: isMobile ? '100%' : '175px' }}
-                    renderInput={(params) => <TextField {...params} label="Circunscripcion" />}
-                    onChange={(event, newValue) => {
-                        setCircunscripcion(newValue);
-                        setLocalidad(null);
-                        setBarrio(null);
-                        setZona(null);
-                    }}
-                />
+        <Grid container spacing={2} display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+
+            <Grid container spacing={2} width="90%" justifyContent="start" alignItems="center" padding="10px">
+                <Grid item xs={isMobile ? 6 : 6}>
+                    <Autocomplete
+                        options={circunscripciones?.map(circunscripcion => circunscripcion.nombre) || []}
+                        value={circunscripcion}
+                        sx={{ width: isMobile ? '100%' : '100%' }}
+                        renderInput={(params) => <TextField {...params} label="Circunscripcion" />}
+                        onChange={(event, newValue) => {
+                            setCircunscripcion(newValue);
+                            setLocalidad(null);
+                            setBarrio(null);
+                            setZona(null);
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={isMobile ? 6 : 6} >
+                    <Autocomplete
+                        options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.map(localidad => localidad.nombre) || []}
+                        value={localidad}
+                        disabled={circunscripcion === null}
+                        sx={{ width: isMobile ? '100%' : '100%' }}
+                        openOnFocus
+                        renderInput={(params) => <TextField {...params} label="Localidad" inputRef={localidadRef} />}
+                        onChange={(event, newValue) => {
+                            setLocalidad(newValue);
+                            setBarrio(null);
+                            setZona(null);
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={isMobile ? 6 : 6} >
+                    <Autocomplete
+                        options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.map(barrio => barrio.nombre) || []}
+                        value={barrio}
+                        openOnFocus
+                        sx={{ width: isMobile ? '100%' : '100%' }}
+                        disabled={localidad === null}
+                        renderInput={(params) => <TextField {...params} label="Barrio" inputRef={barrioRef} />}
+                        onChange={(event, newValue) => {
+                            setBarrio(newValue);
+                            setZona(null);
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={isMobile ? 6 : 6} >
+                    <Autocomplete
+                        options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.map(zona => zona.nombre) || []}
+                        value={zona?.nombre || ''}
+                        sx={{ width: isMobile ? '100%' : '100%' }}
+                        
+                        openOnFocus
+                        disabled={barrio === null}
+                        renderInput={(params) => <TextField {...params} label="Zona" inputRef={zonaRef} />}
+                        onChange={(event, newValue) => {
+                            setZona(circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.find(zon => zon.nombre === newValue));
+                        }}
+                    />
+                </Grid>
             </Grid>
-            <Grid item xs={isMobile ? 6 : 'auto'}>
-                <Autocomplete
-                    options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.map(localidad => localidad.nombre) || []}
-                    value={localidad}
-                    disabled={circunscripcion === null}
-                    sx={{ width: isMobile ? '100%' : '175px' }}
-                    openOnFocus
-                    renderInput={(params) => <TextField {...params} label="Localidad" inputRef={localidadRef} />}
-                    onChange={(event, newValue) => {
-                        setLocalidad(newValue);
-                        setBarrio(null);
-                        setZona(null);
-                    }}
-                />
-            </Grid>
-            <Grid item xs={isMobile ? 6 : 'auto'}>
-                <Autocomplete
-                    options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.map(barrio => barrio.nombre) || []}
-                    value={barrio}
-                    openOnFocus
-                    sx={{ width: isMobile ? '100%' : '175px' }}
-                    disabled={localidad === null}
-                    renderInput={(params) => <TextField {...params} label="Barrio" inputRef={barrioRef} />}
-                    onChange={(event, newValue) => {
-                        setBarrio(newValue);
-                        setZona(null);
-                    }}
-                />
-            </Grid>
-            <Grid item xs={isMobile ? 6 : 'auto'}>
-                <Autocomplete
-                    options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.map(zona => zona.nombre) || []}
-                    value={zona?.nombre || ''}
-                    sx={{ width: isMobile ? '100%' : '175px' }}
-                    openOnFocus
-                    disabled={barrio === null}
-                    renderInput={(params) => <TextField {...params} label="Zona" inputRef={zonaRef} />}
-                    onChange={(event, newValue) => {
-                        setZona(circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.find(zon => zon.nombre === newValue));
-                    }}
-                />
-            </Grid>
-            {!isMobile && <Grid item xs={'auto'}
-                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {!isMobile && <Grid item xs={'auto'} width="10%"
+                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:'40px'}}>
                 <IconButton
                     onClick={handleClear}
                     color="primary"
@@ -252,7 +256,7 @@ const Tasaciones = () => {
                 width: '90%',
             }}>
                 {renderAutocompletes()}
-                <Grid container justifyContent="center" style={{ marginTop: '20px' }}>
+                <Grid container justifyContent="center" style={{ marginTop: '20px'}}>
                     <Grid item xs={6} >
                         <BotonLoading
                             loading={loading}
@@ -343,7 +347,7 @@ const Tasaciones = () => {
             </Box>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px' }} />
 
-            <Box flexGrow={1} display="flex" flexDirection="column" overflow="auto" padding="20px">
+            <Box flexGrow={1} display="flex" flexDirection="column" overflow="auto" padding="20px" >
                 <Grid container direction="column" mt={1}>
                     <Grid container spacing={2} justifyContent="center" alignItems="center" gap={2}>
                         {renderAutocompletes()}
