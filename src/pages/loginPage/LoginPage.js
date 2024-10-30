@@ -56,7 +56,13 @@ export default function LoginPage() {
             .then(response => {
                 if (response.token) {
                     login(response);
-                    navigate("/tasaciones");
+                    
+                    if(response.cambio_contraseña){
+                        navigate("/tasaciones");
+                    }else{
+                        navigate("/perfil");
+                    }
+                    
                 }
             })
             .catch(() => {

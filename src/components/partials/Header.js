@@ -10,7 +10,7 @@ const Header = () => {
   const [selectedPage, setSelectedPage] = useState('SAP');
 
   const { rol } = useContext(UserContext);
-
+  
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -20,12 +20,12 @@ const Header = () => {
     setSelectedPage(pageName);
   };
 
-  return ( //cambiar a 2
+  return ( 
     <>
       <AppBar position="static" style={{ backgroundColor: '#28508E' }}>
         <Toolbar style={{ height: '40px', padding: 0 }}>
           <Box display="flex" alignItems="center" width="100%">
-            {rol !== '123' &&
+            {(rol == '2' || rol == '3') &&
               <IconButton
                 onClick={toggleSideBar}
                 edge="start"

@@ -67,6 +67,18 @@ export default function Indices(props) {
                     },
                 }}
             />
+            {(shortLabel=='ICCAC'||shortLabel=='ICCAC + CS')&&
+            
+            <Box display="flex" justifyContent="center" mt={-1}>
+            <Checkbox checked={conCargaSocial} onClick={() => setConCargaSocial(!conCargaSocial)} />
+            <Typography sx={{
+                alignSelf: 'center',
+                fontSize: '0.8rem',
+            }}>Con carga social</Typography>
+            </Box>} 
+
+            
+
             <Box display="flex" justifyContent="center">
                 <Button
                     variant="outlined"
@@ -164,7 +176,7 @@ export default function Indices(props) {
 
     return (
         <Box>
-            <Typography variant="h6" textAlign="center" mt={1}>Costos</Typography>
+            <Typography variant="h6" textAlign="center" mt={1}>Precio de la Construcción</Typography>
             <Box display="flex" justifyContent="center" mb={1}>
                 <Divider sx={{ backgroundColor: '#28508E', width: '100%' }} />
             </Box>
@@ -173,13 +185,7 @@ export default function Indices(props) {
                 {renderIndiceSection("", "ICC CBA", indice1, setIndice1)}
 
                 
-                <Box display="flex" justifyContent="center" mt={-1}>
-                    <Checkbox checked={conCargaSocial} onClick={() => setConCargaSocial(!conCargaSocial)} />
-                    <Typography sx={{
-                        alignSelf: 'center',
-                        fontSize: '0.8rem',
-                    }}>Con carga social</Typography>
-                </Box>
+                
                 {conCargaSocial ?
                     renderIndiceSection("", "ICCAC + CS", indice2, setIndice2)
                     :

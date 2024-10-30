@@ -23,11 +23,11 @@ function UserProvider({ children }) {
     function login(respuesta) {
         setUsuario(respuesta.user);
         setToken(respuesta.token);
-        setRol(respuesta.rol);
+        setRol(respuesta.rol_id);
         localStorage.setItem('token', respuesta.token);
         localStorage.setItem('usuario', respuesta.user);
         localStorage.setItem('rol', respuesta.rol_id);
-        return respuesta.rol;
+        return respuesta.rol_id;
     }
 
     function logout() {

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Box, Grid, TextField, Button, Typography, Paper, Divider, IconButton, InputAdornment } from '@mui/material';
 import { UserContext } from "../../contexts/UserContext";
 import useFetch, { host } from "../../utils/Fetch";
 import Swal from 'sweetalert2';
 import BotonLoading from '../../components/BotonLoading';
-import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
+import { LockOutlined as LockOutlinedIcon , ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from '@mui/icons-material';
 
 export default function PerfilPage() {
@@ -17,6 +18,7 @@ export default function PerfilPage() {
 
     const [loading, setLoading] = useState(false);
     const { postFetch } = useFetch();
+    const navigate = useNavigate();
 
     const handlePasswordChange = (e) => {
         e.preventDefault();
@@ -36,6 +38,7 @@ export default function PerfilPage() {
                     setContraseñaActual('');
                     setNuevaContraseña('');
                     setConfirmarContraseña('');
+                    navigate("/tasaciones");
                 })
                 .catch((err) => {
                     console.log(err);
@@ -163,6 +166,15 @@ export default function PerfilPage() {
                         >
                             Cambiar Contraseña
                         </BotonLoading>
+                    </Box>
+                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', mb:-2 }}>
+                        <Button
+                            variant="text"
+                            startIcon={<ArrowBackIcon />}
+                            onClick={() => navigate(-1)}
+                        >
+                            Volver Atrás
+                        </Button>
                     </Box>
                 </Box>
             </Paper>
