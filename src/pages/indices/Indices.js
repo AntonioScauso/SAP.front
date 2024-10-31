@@ -30,14 +30,14 @@ export default function Indices(props) {
 
     const getLastDolarValue = (historial, type = 'venta') => {
         if (historial && historial.length > 0) {
-            return historial[0][type];
+            return historial[historial.length - 1][type];
         }
         return '';
     };
 
     const getLastInflacionValue = (historial) => {
         if (historial && historial.length > 0) {
-            return historial[0].variacion;
+            return historial[historial.length - 1].variacion;
         }
         return '';
     };
