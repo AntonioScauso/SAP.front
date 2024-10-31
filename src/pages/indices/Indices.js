@@ -199,7 +199,7 @@ export default function Indices(props) {
 
                 {renderDolarSection("", "Cotización MEP", historialesDolar?.dolarMep)}
                 {renderDolarSection("", "Cotización Oficial", historialesDolar?.dolarOficial)}
-                {renderInflacionSection("Índice de Inflación", "Variación", historialesDolar?.indicesInflacion)}
+                {renderInflacionSection("", "Índice de Inflación", historialesDolar?.indicesInflacion)}
             </Box>
 
             <Popover
