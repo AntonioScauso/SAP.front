@@ -56,13 +56,13 @@ export default function LoginPage() {
             .then(response => {
                 if (response.token) {
                     login(response);
-                    
-                    if(response.cambio_contraseña){
+
+                    if (response.cambio_contraseña) {
                         navigate("/tasaciones");
-                    }else{
+                    } else {
                         navigate("/perfil");
                     }
-                    
+
                 }
             })
             .catch(() => {

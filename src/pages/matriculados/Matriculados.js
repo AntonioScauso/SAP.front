@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react"
 import useFetch, { host } from "../../utils/Fetch";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
-import { Button, Grid, Typography, Dialog, Switch } from "@mui/material";
+import { Button, Box, IconButton, Switch } from "@mui/material";
 import ModalMatriculado from "./ModalMatriculado";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Filtro from "../../components/Filtro";
 
 export default function Matriculados() {
     const [matriculados, setMatriculados] = useState([]);
+    const [matriculadosFiltrados, setMatriculadosFiltrados] = useState([]);
     const [matriculado, setMatriculado] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [filterColumn, setFilterColumn] = useState('');
+    const [filterValue, setFilterValue] = useState('');
+    const [fixedFilters, setFixedFilters] = useState([]);
+    const filteredCount = matriculadosFiltrados.length;
 
     const { getFetch, postFetch } = useFetch();
 
@@ -23,10 +28,24 @@ export default function Matriculados() {
     }
 
     useEffect(() => {
+        if (matriculados.length > 0) {
+            const filtered = Filtro.filtrarFilas(
+                matriculados,
+                columns,
+                filterColumn,
+                filterValue,
+                fixedFilters
+            );
+            console.log(filtered);
+
+            setMatriculadosFiltrados(filtered);
+        }
+    }, [matriculados, filterColumn, filterValue, fixedFilters]);
+
+    useEffect(() => {
         getFetch(`${host}usuario/colegiados/`, true)
             .then(data => {
-                console.log(data);
-
+                setMatriculadosFiltrados(data.data);
                 setMatriculados(data.data);
             })
     }, []);
@@ -50,6 +69,24 @@ export default function Matriculados() {
                 />
             )
         },
+        {
+            field: "editar",
+            headerName: "Editar",
+            width: 100,
+            renderCell: (params) => {
+                return (
+                    <IconButton>
+                        <EditIcon
+                            variant="contained"
+                            color="primary"
+                            onClick={() => { setMatriculado(params.row); setModalOpen(true) }}
+                        >
+                            Editar
+                        </EditIcon>
+                    </IconButton>
+                )
+            }
+        }
         // {
         //     field: "acciones",
         //     headerName: "Acciones",
@@ -82,14 +119,15 @@ export default function Matriculados() {
     }
 
     return (
-        <>
+        <Box sx={{ width: '100%', height: '100%', gap: 5 }}>
+            <Filtro columns={columns.filter(column => column.field !== 'editar' && column.field !== 'activo')} filterColumn={filterColumn} setFilterColumn={setFilterColumn} filterValue={filterValue} setFilterValue={setFilterValue} fixedFilters={fixedFilters} setFixedFilters={setFixedFilters} filteredCount={filteredCount} />
             <DataGrid
-                rows={matriculados}
+                rows={matriculadosFiltrados}
                 columns={columns}
                 slots={{ toolbar: CustomGridToolBar }}
-                sx={{ height: '90vh' }}
+                sx={{ height: '65vh', mt: 2 }}
             />
-            <ModalMatriculado matriculados={matriculados} setMatriculados={setMatriculados} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
-        </>
+            <ModalMatriculado matriculados={matriculados} setMatriculados={setMatriculados} isOpen={modalOpen} onClose={() => { setModalOpen(false); setMatriculado(null) }} matriculado={matriculado} />
+        </Box>
     )
 }
