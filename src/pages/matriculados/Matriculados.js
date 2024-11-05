@@ -36,7 +36,7 @@ export default function Matriculados() {
                 filterValue,
                 fixedFilters
             );
-            console.log(filtered);
+            // console.log(filtered);
 
             setMatriculadosFiltrados(filtered);
         }

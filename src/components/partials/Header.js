@@ -19,13 +19,13 @@ const Header = () => {
   const handlePageSelect = (pageName) => {
     setSelectedPage(pageName);
   };
-
+  
   return (
     <>
       <AppBar position="static" style={{ backgroundColor: '#28508E' }}>
         <Toolbar style={{ height: '40px', padding: 0 }}>
           <Box display="flex" alignItems="center" width="100%">
-            {(rol == '2' || rol == '3') || (rol === rol) &&
+            {(rol == '2' || rol == '3') &&
               <IconButton
                 onClick={toggleSideBar}
                 edge="start"
@@ -35,6 +35,7 @@ const Header = () => {
               >
                 <MenuIcon />
               </IconButton>}
+
             <Typography
               variant="h6"
               component="div"
