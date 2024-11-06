@@ -331,9 +331,10 @@ const Tasaciones = () => {
     );
 
     const renderDesktopView = () => (
-        <Box display="flex" flexDirection="row" height="100vh" width="100vw">
-            <Box display="flex" flexDirection="column" width="20%" minWidth="200px" maxWidth="300px"
-                marginTop={-3} ml={-3} overflow="auto" height="100%" style={{ backgroundColor: '#E0E0E0' }}
+        <Box display="flex" flexDirection="row" alignItems="start"  height="100vh" width="100vw"  overflow="auto" >
+
+            <Box display="flex" flexDirection="column" width="30%" minWidth="200px" maxWidth="300px"
+                 marginBottom={3} overflow="auto" height="100%" style={{ backgroundColor: '#E0E0E0' }}
                 sx={{
                     '&::-webkit-scrollbar': {
                         width: '0.2em',
@@ -347,7 +348,7 @@ const Tasaciones = () => {
             </Box>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px' }} />
 
-            <Box flexGrow={1} display="flex" flexDirection="column" overflow="auto" padding="20px" >
+            <Box flexGrow={1} display="flex" flexDirection="column" padding="30px" minHeight="40vw" width="80%" >
                 <Grid container direction="column" mt={1}>
                     <Grid container spacing={2} justifyContent="center" alignItems="center" gap={2}>
                         {renderAutocompletes()}
@@ -420,8 +421,9 @@ const Tasaciones = () => {
                         <Sugerencias zonaEnTabla={zonaEnTabla} />
                     </Box>
                     :
-                    <Box flexGrow={1} display="flex" alignItems="center" justifyContent="center">
-                        <img src={LogoColegio} alt="Logo Colegio" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+                    <Box flexGrow={1} display="flex" flexDirection="column" alignItems="center" justifyContent="center" paddingTop={3} marginBottom={-2}> 
+                        <p style={{fontSize:'3vw', marginBottom:"-30px"}}>SISTEMA DE CONSULTA DE VALORES</p>
+                        <img src={LogoColegio} alt="Logo Colegio" style={{ width: '55vw', height:'auto' }} />
                     </Box>
                 }
             </Box>
