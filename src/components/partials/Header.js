@@ -9,7 +9,7 @@ const Header = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState('SAP');
 
-  const { rol } = useContext(UserContext);
+  const { rol, usuario } = useContext(UserContext);
 
 
   const toggleSideBar = () => {
@@ -19,7 +19,7 @@ const Header = () => {
   const handlePageSelect = (pageName) => {
     setSelectedPage(pageName);
   };
-  
+    // console.log('usuario',usuario)
   return (
     <>
       <AppBar position="static" style={{ backgroundColor: '#28508E' }}>
@@ -55,7 +55,8 @@ const Header = () => {
             >
               Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba
             </Typography>
-            <Box sx={{ mr: 1 }}>
+            <Box sx={{ mr: 1 , display:'flex'}}>
+              <h1>hola</h1>
               <MenuUsuario />
             </Box>
           </Box>

@@ -27,6 +27,7 @@ function UserProvider({ children }) {
         localStorage.setItem('token', respuesta.token);
         localStorage.setItem('usuario', respuesta.user);
         localStorage.setItem('rol', respuesta.rol_id);
+        console.log(usuario)
         return respuesta.rol_id;
     }
 

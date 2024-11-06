@@ -13,7 +13,8 @@ export default function AdminLayout() {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 flexGrow: 1,
-                padding: '30px',
+                // overflowY:'auto',
+                height:'100vh'
             }}>
                 <Outlet />
             </div>

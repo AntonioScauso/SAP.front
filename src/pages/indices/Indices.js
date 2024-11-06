@@ -43,30 +43,53 @@ export default function Indices(props) {
     };
 
     const renderIndiceSection = (label, shortLabel, indice, setIndice) => (
-        <Box display="flex" flexDirection="column" mb={2} gap={1} paddingLeft={2}>
-            <Typography variant="subtitle2">{label}</Typography>
-            <TextField
-                label={shortLabel}
-                value={getLastActiveValue(indice)}
-                disabled
-                size="small"
-                sx={{
-                    width: '80%',
-                    '& .MuiInputBase-root': {
-                        color: 'text.primary',
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(0, 0, 0, 0.23)',
-                    },
-                    '& .MuiInputLabel-root': {
-                        color: 'rgba(0, 0, 0, 0.6)',
-                    },
-                    '& .MuiInputBase-input': {
-                        WebkitTextFillColor: 'inherit',
-                        opacity: 1,
-                    },
-                }}
-            />
+        <Box display="flex" flexDirection="column" mb={2} gap={1} paddingLeft={2} paddingTop={1}>
+            
+            <Box display="flex" flexDirection="row" gap='10px' paddingRight='10px'>
+                <Typography variant="subtitle2">{label}</Typography>
+                <TextField
+                    label={shortLabel}
+                    value={getLastActiveValue(indice)}
+                    disabled
+                    size="small"
+                    sx={{
+                        width: '80%',
+                        '& .MuiInputBase-root': {
+                            color: 'text.primary',
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'rgba(0, 0, 0, 0.23)',
+                        },
+                        '& .MuiInputLabel-root': {
+                            color: 'rgba(0, 0, 0, 0.6)',
+                        },
+                        '& .MuiInputBase-input': {
+                            WebkitTextFillColor: 'inherit',
+                            opacity: 1,
+                        },
+                    }}
+                />
+                <Box display="flex"  justifyContent="center" >
+                    {/* <Button
+                        variant="outlined"
+                        // size="small"
+                        // startIcon={<HistoryIcon />}
+                        onClick={(e) => handleClick(e, indice)}
+                        sx={{ alignSelf: 'flex-start', width:'1vw !important'}}
+                        // style={{width:'1vw !important', backgroundColor:'red'}}
+                        
+                    >
+                    
+                    </Button> */}
+                    <button style={{width:'3vw', display:'flex', justifyContent:'center',
+                                    alignItems:'center', cursor:'pointer', backgroundColor:'transparent'
+                                    , color:'#28508E', border:'none', borderRadius:'20px'}}
+                                    onClick={(e) => handleClick(e, indice)}
+                                    > <HistoryIcon /></button>
+                </Box>
+
+            </Box>
+            
             {(shortLabel=='ICCAC'||shortLabel=='ICCAC + CS')&&
             
             <Box display="flex" justifyContent="center" mt={-1}>
@@ -76,99 +99,83 @@ export default function Indices(props) {
                 fontSize: '0.8rem',
             }}>Con carga social</Typography>
             </Box>} 
-
-            
-
-            <Box display="flex" justifyContent="center">
-                <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<HistoryIcon />}
-                    onClick={(e) => handleClick(e, indice)}
-                    sx={{ alignSelf: 'flex-start', mt: 1, mb: 1 }}
-                >
-                    Historial
-                </Button>
-            </Box>
             <Divider sx={{ backgroundColor: '#28508E', width: '80%', alignSelf: 'center' }} />
         </Box>
     );
 
     const renderDolarSection = (label, shortLabel, data, type = 'venta') => (
-        <Box display="flex" flexDirection="column" mb={2} gap={1} paddingLeft={2}>
-            <Typography variant="subtitle2">{label}</Typography>
-            <TextField
-                label={shortLabel}
-                value={`$${getLastDolarValue(data, type)}`}
-                disabled
-                size="small"
-                sx={{
-                    width: '80%',
-                    '& .MuiInputBase-root': {
-                        color: 'text.primary',
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(0, 0, 0, 0.23)',
-                    },
-                    '& .MuiInputLabel-root': {
-                        color: 'rgba(0, 0, 0, 0.6)',
-                    },
-                    '& .MuiInputBase-input': {
-                        WebkitTextFillColor: 'inherit',
-                        opacity: 1,
-                    },
-                }}
-            />
-            <Box display="flex" justifyContent="center">
-                <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<HistoryIcon />}
-                    onClick={(e) => handleClick(e, data)}
-                    sx={{ alignSelf: 'flex-start', mt: 1, mb: 1 }}
-                >
-                    Historial
-                </Button>
+        <Box display="flex" flexDirection="column" mb={2} gap={2} paddingLeft={2}>
+
+            <Box display="flex" flexDirection="row" gap='10px' paddingRight='10px'>
+                <Typography variant="subtitle2">{label}</Typography>
+                <TextField
+                        label={shortLabel}
+                        value={`$${getLastDolarValue(data, type)}`}
+                        disabled
+                        size="small"
+                        sx={{
+                            width: '80%',
+                            '& .MuiInputBase-root': {
+                                color: 'text.primary',
+                            },
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                            },
+                            '& .MuiInputLabel-root': {
+                                color: 'rgba(0, 0, 0, 0.6)',
+                            },
+                            '& .MuiInputBase-input': {
+                                WebkitTextFillColor: 'inherit',
+                                opacity: 1,
+                            },
+                        }}
+                    />
+                <Box display="flex" justifyContent="center">
+                    <button style={{width:'3vw', display:'flex', justifyContent:'center',
+                                    alignItems:'center', cursor:'pointer', backgroundColor:'transparent'
+                                    , color:'#28508E', border:'none', borderRadius:'20px'}}
+                                    onClick={(e) => handleClick(e, data)}
+                        > <HistoryIcon /></button>
+                </Box>
             </Box>
+           
             <Divider sx={{ backgroundColor: '#28508E', width: '80%', alignSelf: 'center' }} />
         </Box>
     );
 
     const renderInflacionSection = (label, shortLabel, data) => (
-        <Box display="flex" flexDirection="column" mb={2} gap={1} paddingLeft={2}>
-            <Typography variant="subtitle2">{label}</Typography>
-            <TextField
-                label={shortLabel}
-                value={`${getLastInflacionValue(data)}%`}
-                disabled
-                size="small"
-                sx={{
-                    width: '80%',
-                    '& .MuiInputBase-root': {
-                        color: 'text.primary',
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'rgba(0, 0, 0, 0.23)',
-                    },
-                    '& .MuiInputLabel-root': {
-                        color: 'rgba(0, 0, 0, 0.6)',
-                    },
-                    '& .MuiInputBase-input': {
-                        WebkitTextFillColor: 'inherit',
-                        opacity: 1,
-                    },
-                }}
-            />
-            <Box display="flex" justifyContent="center">
-                <Button
-                    variant="outlined"
+        <Box display="flex" flexDirection="column" mb={2} gap={2} paddingLeft={2}>
+            <Box display="flex" flexDirection="row" gap='10px' paddingRight='10px'>
+                <Typography variant="subtitle2">{label}</Typography>
+                <TextField
+                    label={shortLabel}
+                    value={`${getLastInflacionValue(data)}%`}
+                    disabled
                     size="small"
-                    startIcon={<HistoryIcon />}
-                    onClick={(e) => handleClick(e, data)}
-                    sx={{ alignSelf: 'flex-start', mt: 1, mb: 1 }}
-                >
-                    Historial
-                </Button>
+                    sx={{
+                        width: '80%',
+                        '& .MuiInputBase-root': {
+                            color: 'text.primary',
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'rgba(0, 0, 0, 0.23)',
+                        },
+                        '& .MuiInputLabel-root': {
+                            color: 'rgba(0, 0, 0, 0.6)',
+                        },
+                        '& .MuiInputBase-input': {
+                            WebkitTextFillColor: 'inherit',
+                            opacity: 1,
+                        },
+                    }}
+                />
+                <Box display="flex" justifyContent="center">
+                    <button style={{width:'3vw', display:'flex', justifyContent:'center',
+                                        alignItems:'center', cursor:'pointer', backgroundColor:'transparent'
+                                        , color:'#28508E', border:'none', borderRadius:'20px'}}
+                                        onClick={(e) => handleClick(e, data)}
+                            > <HistoryIcon /></button>
+                </Box>
             </Box>
             <Divider sx={{ backgroundColor: '#28508E', width: '80%', alignSelf: 'center' }} />
         </Box>
@@ -187,9 +194,9 @@ export default function Indices(props) {
                 
                 
                 {conCargaSocial ?
-                    renderIndiceSection("", "ICCAC + CS", indice2, setIndice2)
+                    renderIndiceSection("", "ICC-CA + CS", indice2, setIndice2)
                     :
-                    renderIndiceSection("", "ICCAC", indice3, setIndice3)
+                    renderIndiceSection("", "ICC-CA", indice3, setIndice3)
                 }
                 
 
