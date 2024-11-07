@@ -57,6 +57,7 @@ export default function LoginPage() {
                 if (response.token) {
                     login(response);
 
+
                     if (response.cambio_contraseña) {
                         navigate("/tasaciones");
                     } else {

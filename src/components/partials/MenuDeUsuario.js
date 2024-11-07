@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { useContext } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import styled from "@emotion/styled";
 
 export default function MenuUsuario() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -23,19 +25,21 @@ export default function MenuUsuario() {
         setAnchorEl(null);
     };
 
+    const { nombre,apellido } = useContext(UserContext);
+
     return (
         <React.Fragment>
-            <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", textAlign: "center"}}>
                 <Tooltip title="Configuracion Cuenta">
                     <IconButton
                         onClick={handleClick}
                         size="small"
-                        sx={{ ml: 2 }}
+                        sx={{ ml: 2}}
                         aria-controls={open ? "account-menu" : undefined}
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
                     >
-                        <Avatar sx={{ width: 32, height: 32 }} />
+                        <Avatar sx={{ width: '2.5vw', height: '2.5vw' }} />
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -49,8 +53,10 @@ export default function MenuUsuario() {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
 
             >
+                <p style={{textAlign:'center', fontSize:'clamp(1rem, 1vw, 1.25rem)'}}>{nombre}, {apellido}</p>
+
                 <MenuItem
-                    onClick={() => window.location.href = '/perfil'}
+                    onClick={() => window.location.href = '/perfil'} 
                 >
                     <ListItemIcon>
                         <AccountCircle fontSize="small" />

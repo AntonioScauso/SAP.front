@@ -10,6 +10,7 @@ import Indices from "../indices/Indices";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import Sugerencias from "../sugerencias/Sugerencias";
+import SeparadorMiles from '../../utils/SeparadorDeMiles';
 
 const Tasaciones = () => {
     const [circunscripciones, setCircunscripciones] = useState(null);
@@ -116,8 +117,9 @@ const Tasaciones = () => {
         getFetch(url + `precio/?id=${zona.id}`, true)
             .then(data => {
                 setPrecios(data);
-                setDolarOficial(data.dolarOficial);
-                setDolarMep(data.dolarMep);
+                setDolarOficial(SeparadorMiles(data.dolarOficial));
+                setDolarMep(SeparadorMiles(data.dolarMep));
+                
             })
             .catch(err => {
                 console.error(err);
@@ -153,65 +155,123 @@ const Tasaciones = () => {
 
     const columns = [
         { field: 'priceType', headerName: 'Moneda', flex: 1 },
-        { field: 'minPrice', headerName: 'Precio Mínimo', flex: 1 },
+        { field: 'minPrice', headerName: 'Precio Mínimo', flex: 1},
         { field: 'maxPrice', headerName: 'Precio Máximo', flex: 1 },
         { field: 'avgPrice', headerName: 'Promedio', flex: 1 },
     ];
 
     const rows = [
-        { id: 1, priceType: 'Pesos', minPrice: precios?.precioMin, maxPrice: precios?.precioMax, avgPrice: precios?.promedioPesos },
-        { id: 2, priceType: 'Dólar Oficial', minPrice: precios?.precioMinDolarOficial, maxPrice: precios?.precioMaxDolarOficial, avgPrice: precios?.promedioDolarOficial },
-        { id: 3, priceType: 'Dólar MEP', minPrice: precios?.precioMinDolarMep, maxPrice: precios?.precioMaxDolarMep, avgPrice: precios?.promedioDolarMep },
-    ];
+        { id: 1, priceType: 'Pesos', minPrice: SeparadorMiles(precios?.precioMin), maxPrice: SeparadorMiles(precios?.precioMax), avgPrice: SeparadorMiles(precios?.promedioPesos) },
+        { id: 2, priceType: 'Dólar Oficial', minPrice:SeparadorMiles(precios?.precioMinDolarOficial), maxPrice: SeparadorMiles(precios?.precioMaxDolarOficial), avgPrice:SeparadorMiles( precios?.promedioDolarOficial) },
+        { id: 3, priceType: 'Dólar MEP', minPrice:SeparadorMiles(precios?.precioMinDolarMep), maxPrice: SeparadorMiles(precios?.precioMaxDolarMep), avgPrice:SeparadorMiles( precios?.promedioDolarMep) },];
 
     const renderAutocompletes = () => (
         <Grid container spacing={2} display="flex" flexDirection="row" justifyContent="center" alignItems="center">
 
             <Grid container spacing={2} width="90%" justifyContent="start" alignItems="center" padding="10px">
-                <Grid item xs={isMobile ? 6 : 6}>
+                <Grid item xs={isMobile ? 6 :'auto'} 
+                style={{display:'flex',alignItems:'center', width:'50%' }}>
+
                     <Autocomplete
                         options={circunscripciones?.map(circunscripcion => circunscripcion.nombre) || []}
                         value={circunscripcion}
                         sx={{ width: isMobile ? '100%' : '100%' }}
-                        renderInput={(params) => <TextField {...params} label="Circunscripcion" />}
+                        renderInput={(params) => <TextField {...params} label="Circunscripcion"
+                                                    sx={{'& .MuiInputBase-root': {
+                                                    height: 'clamp(3.5rem, 4vw, 5rem)',
+                                                    fontSize:'clamp(1rem, 1.3vw, 1.7rem)',
+                                                    
+                                                    },
+                                                    '& .MuiInputLabel-root': {
+                                                    color: 'rgba(0, 0, 0, 0.6)',
+                                                    fontSize:'clamp(1rem, 1.3vw, 1.6rem)'
+                                                    
+                                                    },}}></TextField>}
                         onChange={(event, newValue) => {
                             setCircunscripcion(newValue);
                             setLocalidad(null);
                             setBarrio(null);
                             setZona(null);
                         }}
+                        componentsProps={{
+                            popper: {
+                                sx: {
+                                    '& .MuiAutocomplete-listbox': {
+                                        fontSize: 'clamp(1rem, 1.2vw, 1.5rem)', // Ajusta el tamaño de fuente de las opciones aquí
+                                    },
+                                },
+                            },
+                        }}
                     />
                 </Grid>
-                <Grid item xs={isMobile ? 6 : 6} >
+                <Grid item xs={isMobile ? 6 : 'auto'} style={{display:'flex',alignItems:'center', width:'50%' }}>
                     <Autocomplete
                         options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.map(localidad => localidad.nombre) || []}
                         value={localidad}
                         disabled={circunscripcion === null}
                         sx={{ width: isMobile ? '100%' : '100%' }}
                         openOnFocus
-                        renderInput={(params) => <TextField {...params} label="Localidad" inputRef={localidadRef} />}
+                        renderInput={(params) => <TextField {...params} label="Localidad" inputRef={localidadRef}  
+                                                            sx={{'& .MuiInputBase-root': {
+                                                                height: 'clamp(3.5rem, 4vw, 5rem)',
+                                                                fontSize:'clamp(1rem, 1.3vw, 1.7rem)',
+                                                                
+                                                                },
+                                                                '& .MuiInputLabel-root': {
+                                                                color: 'rgba(0, 0, 0, 0.6)',
+                                                                fontSize:'clamp(1rem, 1.3vw, 1.6rem)'
+                                                                
+                                                                },}}/>}
                         onChange={(event, newValue) => {
                             setLocalidad(newValue);
                             setBarrio(null);
                             setZona(null);
                         }}
+                        componentsProps={{
+                            popper: {
+                                sx: {
+                                    '& .MuiAutocomplete-listbox': {
+                                        fontSize: 'clamp(1rem, 1.2vw, 1.5rem)', // Ajusta el tamaño de fuente de las opciones aquí
+                                    },
+                                },
+                            },
+                        }}
                     />
                 </Grid>
-                <Grid item xs={isMobile ? 6 : 6} >
+                <Grid item xs={isMobile ? 6 : 'auto'} style={{display:'flex',alignItems:'center', width:'50%' }} >
                     <Autocomplete
                         options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.map(barrio => barrio.nombre) || []}
                         value={barrio}
                         openOnFocus
                         sx={{ width: isMobile ? '100%' : '100%' }}
                         disabled={localidad === null}
-                        renderInput={(params) => <TextField {...params} label="Barrio" inputRef={barrioRef} />}
+                        renderInput={(params) => <TextField {...params} label="Barrio" inputRef={barrioRef} 
+                                                    sx={{'& .MuiInputBase-root': {
+                                                        height: 'clamp(3.5rem, 4vw, 5rem)',
+                                                        fontSize:'clamp(1rem, 1.3vw, 1.7rem)',
+                                                        
+                                                        },
+                                                        '& .MuiInputLabel-root': {
+                                                        color: 'rgba(0, 0, 0, 0.6)',
+                                                        fontSize:'clamp(1rem, 1.3vw, 1.6rem)'
+                                                        
+                                                        },}}  />}
                         onChange={(event, newValue) => {
                             setBarrio(newValue);
                             setZona(null);
                         }}
+                        componentsProps={{
+                            popper: {
+                                sx: {
+                                    '& .MuiAutocomplete-listbox': {
+                                        fontSize: 'clamp(1rem, 1.2vw, 1.5rem)', // Ajusta el tamaño de fuente de las opciones aquí
+                                    },
+                                },
+                            },
+                        }}
                     />
                 </Grid>
-                <Grid item xs={isMobile ? 6 : 6} >
+                <Grid item xs={isMobile ? 6 : 'auto'} style={{display:'flex',alignItems:'center', width:'50%' }} >
                     <Autocomplete
                         options={circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.map(zona => zona.nombre) || []}
                         value={zona?.nombre || ''}
@@ -219,9 +279,29 @@ const Tasaciones = () => {
                         
                         openOnFocus
                         disabled={barrio === null}
-                        renderInput={(params) => <TextField {...params} label="Zona" inputRef={zonaRef} />}
+                        renderInput={(params) => <TextField {...params} label="Zona" inputRef={zonaRef} 
+                                                    sx={{'& .MuiInputBase-root': {
+                                                        height: 'clamp(3.5rem, 4vw, 5rem)',
+                                                        fontSize:'clamp(1rem, 1.3vw, 1.7rem)',
+                                                        
+                                                        },
+                                                        '& .MuiInputLabel-root': {
+                                                        color: 'rgba(0, 0, 0, 0.6)',
+                                                        fontSize:'clamp(1rem, 1.3vw, 1.6rem)',
+
+                                                        
+                                                        },}} />}
                         onChange={(event, newValue) => {
                             setZona(circunscripciones?.find(circ => circ.nombre === circunscripcion)?.localidades?.find(loc => loc.nombre === localidad)?.barrios?.find(bar => bar.nombre === barrio)?.zonas?.find(zon => zon.nombre === newValue));
+                        }}
+                        componentsProps={{
+                            popper: {
+                                sx: {
+                                    '& .MuiAutocomplete-listbox': {
+                                        fontSize: 'clamp(1rem, 1.2vw, 1.5rem)', // Ajusta el tamaño de fuente de las opciones aquí
+                                    },
+                                },
+                            },
                         }}
                     />
                 </Grid>
@@ -268,6 +348,7 @@ const Tasaciones = () => {
                                 backgroundColor: '#28508E',
                                 '&:hover': { backgroundColor: '#28508E' },
                                 width: '100%',
+                                
                             }}
                             endIcon={<QueryStatsIcon style={{ fontSize: '1.5rem' }} />}
                         >
@@ -279,7 +360,7 @@ const Tasaciones = () => {
                             onClick={handleClear}
                             color="primary"
                             aria-label="clear fields"
-                            style={{ color: '#28508E' }}
+                            style={{ color: '#28508E'}}
                             disabled={circunscripcion === null && zonaEnTabla === null}
                         >
                             <BackspaceIcon />
@@ -331,10 +412,10 @@ const Tasaciones = () => {
     );
 
     const renderDesktopView = () => (
-        <Box display="flex" flexDirection="row" alignItems="start"  height="100%" width="100vw" overflow='auto'>
+        <Box display="flex" flexDirection="row" alignItems="start"  height="100%" width="100%" overflow='auto'>
 
-            <Box display="flex" flexDirection="column" width="30%" minWidth="200px" maxWidth="300px"
-                 overflow="auto" height="100%" style={{ backgroundColor: '#E0E0E0' }}
+            <Box display="flex" flexDirection="column" width="25vw" minWidth="200px" maxWidth="400px"
+                 overflow="auto" height="100%" style={{ backgroundColor: '#E0E0E0' }} 
                 sx={{
                     '&::-webkit-scrollbar': {
                         width: '0.3vw',
@@ -347,9 +428,11 @@ const Tasaciones = () => {
                 <Indices indice1={indice1} setIndice1={setIndice1} indice2={indice2} setIndice2={setIndice2} indice3={indice3} setIndice3={setIndice3} historialesDolar={historialesDolar} />
             
             </Box>
+
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px' }} />
 
-            <Box flexGrow={1} display="flex" flexDirection="column" padding="30px" overflow="hidden" minHeight="40vw" width="80%" >
+            <Box flexGrow={1} display="flex" flexDirection="column" padding="30px" overflow="hidden" minHeight="40vw" width='80%'>
+
                 <Grid container direction="column" mt={1}  >
                     <Grid container spacing={2} justifyContent="center" alignItems="center" gap={2}>
                         {renderAutocompletes()}
@@ -362,10 +445,10 @@ const Tasaciones = () => {
                                 state={zona === null}
                                 colorLetra='white'
                                 sx={{
-                                    height: '35px', backgroundColor: '#28508E',
-                                    '&:hover': { backgroundColor: '#28508E' }
-                                }}
-                                endIcon={<QueryStatsIcon style={{ fontSize: '1.5rem' }} />}
+                                    height: 'clamp(1rem, 3vw, 3.5rem)', backgroundColor: '#28508E',
+                                    '&:hover': { backgroundColor: '#28508E' }, fontSize:'clamp(0.8rem, 1.2vw, 1.4rem)'     
+                                                           }}
+                                endIcon={<QueryStatsIcon style={{ fontSize: 'clamp(1rem, 1.5vw, 1.8rem)' }} />}
                             >
                                 Consultar
                             </BotonLoading>
@@ -394,13 +477,16 @@ const Tasaciones = () => {
                                     '& .MuiDataGrid-row': {
                                         '&.dolarMEP-row': {
                                             backgroundColor: 'rgba(33, 150, 243, 0.3)',
+                                            fontSize:'clamp(0.6rem, 1.5vw, 2.0rem)'
                                         },
                                         '&.dolarOficial-row': {
                                             backgroundColor: 'rgba(76, 175, 80, 0.3)',
+                                            fontSize:'clamp(0.6rem, 1.5vw, 2.0rem)'
                                         },
                                         '&.pesos-row': {
                                             backgroundColor: 'rgba(255, 152, 0, 0.3)',
-                                        }
+                                            fontSize:'clamp(0.6rem, 1.5vw, 2.0rem)'
+                                        },
                                     }
                                 }}
                             />
@@ -408,14 +494,14 @@ const Tasaciones = () => {
                         <Box display="flex" flexDirection="column" alignItems="center" gap={2} p={2}
                             border={1} borderColor="primary.main" borderRadius={2}>
                             <Box display="flex" justifyContent="center" alignItems="center" gap={4}>
-                                <Typography variant="body1">
+                                <Typography variant="body1" style={{fontSize:'clamp(0.4rem, 1.3vw, 1.5rem)'}}>
                                     Dólar Oficial: ${dolarOficial}
                                 </Typography>
-                                <Typography variant="body1">
+                                <Typography variant="body1" style={{fontSize:'clamp(0.4rem, 1.3vw, 1.5rem)'}}>
                                     Dólar MEP: ${dolarMep}
                                 </Typography>
                             </Box>
-                            <Typography variant="body1" textAlign="center">
+                            <Typography variant="body1" textAlign="center" style={{fontSize:'clamp(0.4rem, 1.3vw, 1.5rem)'}}>
                             Dólar promedio del último mes.
                             </Typography>
                         </Box>

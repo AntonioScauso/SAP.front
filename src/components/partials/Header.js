@@ -9,7 +9,7 @@ const Header = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState('SAP');
 
-  const { rol, usuario } = useContext(UserContext);
+  const { rol, matricula } = useContext(UserContext);
 
 
   const toggleSideBar = () => {
@@ -19,12 +19,12 @@ const Header = () => {
   const handlePageSelect = (pageName) => {
     setSelectedPage(pageName);
   };
-    // console.log('usuario',usuario)
+
   return (
     <>
       <AppBar position="static" style={{ backgroundColor: '#28508E' }}>
-        <Toolbar style={{ height: '40px', padding: 0 }}>
-          <Box display="flex" alignItems="center" width="100%">
+        <Toolbar style={{ height: '3.4vw', padding: 0 }}>
+          <Box display="flex" alignItems="center" width="100%" height='100%'>
             {(rol == '2' || rol == '3') &&
               <IconButton
                 onClick={toggleSideBar}
@@ -45,18 +45,20 @@ const Header = () => {
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                fontSize: {
-                  xs: '0.70rem',  // Extra-small devices
-                  sm: '0.75rem',     // Small devices
-                  md: '1.25rem',  // Medium devices
-                  lg: '1.5rem',   // Large devices
-                },
+                mr:'-9%',
+                fontSize: 'clamp(1.3rem, 1.3vw, 2rem)',
               }}
             >
               Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba
             </Typography>
-            <Box sx={{ mr: 1 , display:'flex'}}>
-              <h1>hola</h1>
+            <Box sx={{ mr: 1 , display:'flex',alignItems:'center', height:'100%'}}>
+
+                <div style={{ display:'flex',overflow:'hidden',justifyContent:'center',alignItems:'center', height:'100%',padding:'5px'}}>
+                  <h1 style={{fontSize:'clamp(0.4rem, 1vw, 1.25rem)', textAlign:'center'}}>
+                    Matricula: <br />{matricula}
+                  </h1>
+                </div>
+              
               <MenuUsuario />
             </Box>
           </Box>

@@ -14,7 +14,8 @@ export default function AdminLayout() {
                 justifyContent: 'center',
                 flexGrow: 1,
                 // overflowY:'auto',
-                height:'100vh'
+                height:'100vh',
+                
             }}>
                 <Outlet />
             </div>
