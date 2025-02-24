@@ -34,6 +34,7 @@ export default function Administracion() {
     const tabs = ['Localidades', 'Barrios', 'Zonas'];
 
     useEffect(() => {
+        console.log('administracion',url)
         getFetch(url + 'data/', true)
             .then(data => {
                 setData(data.circunscripciones);

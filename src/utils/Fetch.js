@@ -1,7 +1,7 @@
 import { UserContext } from "../contexts/UserContext"
 import { useContext } from "react";
 
-const hosts = ['http://192.168.0.102:8000/', "https://sapapi.cavesoft.com.ar/", "http://localhost:8000/"];
+const hosts = ['http://192.168.0.102:8000/', "https://sap.dealbera.online/", "http://localhost:8000/"];
 
 const hostId = 1;
 
@@ -30,6 +30,7 @@ async function customFetch(url, requestInit) {
 export default function useFetch() {
   const userContext = useContext(UserContext);
   const token = userContext?.token;
+  console.log(host)
 
   function getHeaderToken(header = {}) {
     return { ...header, 'Authorization': `Token ${token}` };
