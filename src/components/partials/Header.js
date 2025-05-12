@@ -9,7 +9,7 @@ const Header = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState('SAP');
 
-  const { rol, matricula } = useContext(UserContext);
+  const { rol, matricula, nombre, apellido } = useContext(UserContext);
 
 
   const toggleSideBar = () => {
@@ -55,7 +55,7 @@ const Header = () => {
 
                 <div style={{ display:'flex',overflow:'hidden',justifyContent:'center',alignItems:'center', height:'100%',padding:'5px'}}>
                   <h1 style={{fontSize:'clamp(0.4rem, 1vw, 1.25rem)', textAlign:'center'}}>
-                    Matricula: <br />{matricula}
+                    {nombre} {apellido}
                   </h1>
                 </div>
               

@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { useContext } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import styled from "@emotion/styled";
+
 
 export default function MenuUsuario() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,7 +25,7 @@ export default function MenuUsuario() {
         setAnchorEl(null);
     };
 
-    const { nombre,apellido } = useContext(UserContext);
+    const { matricula } = useContext(UserContext);
 
     return (
         <React.Fragment>
@@ -53,7 +53,7 @@ export default function MenuUsuario() {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
 
             >
-                <p style={{textAlign:'center', fontSize:'clamp(1rem, 1vw, 1.25rem)'}}>{nombre}, {apellido}</p>
+                <p style={{textAlign:'center', fontSize:'clamp(1rem, 1vw, 1.25rem)'}}>Matricula: {matricula}</p>
 
                 <MenuItem
                     onClick={() => window.location.href = '/perfil'} 
