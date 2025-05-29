@@ -9,7 +9,7 @@ const Header = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState('SAP');
 
-  const { rol, matricula, nombre, apellido } = useContext(UserContext);
+  const { rol, nombre, apellido } = useContext(UserContext);
 
 
   const toggleSideBar = () => {
