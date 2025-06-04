@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
+import { AppBar, Toolbar, IconButton, Typography, Box , useMediaQuery} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useContext, useEffect } from "react";
 import SideBar from "./SideBar";
@@ -11,6 +11,7 @@ const Header = () => {
 
   const { rol, nombre, apellido } = useContext(UserContext);
 
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -49,14 +50,28 @@ const Header = () => {
                 fontSize: 'clamp(1.3rem, 1.3vw, 2rem)',
               }}
             >
-              Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba
+              {isMobile ? (
+                <p style={{ lineHeight: '0.8' }}>
+                  C.P.M.C.P. <br />
+                  <strong style={{ color: 'rgba(254, 254, 254, 0.57)', fontSize: '0.8rem' }}>Ley 7191</strong>
+                </p>)
+              :'Colegio Profesional de Martilleros Corredores Públicos de la Provincia de Córdoba'}
+              
             </Typography>
             <Box sx={{ mr: 1 , display:'flex',alignItems:'center', height:'100%'}}>
 
                 <div style={{ display:'flex',overflow:'hidden',justifyContent:'center',alignItems:'center', height:'100%',padding:'5px'}}>
-                  <h1 style={{fontSize:'clamp(0.4rem, 1vw, 1.25rem)', textAlign:'center'}}>
-                    {nombre} {apellido}
+                 {isMobile ? 
+
+                 <h1 style={{fontSize:'clamp(0.7rem, 1vw, 1.25rem)', textAlign:'center',lineHeight: '1.4' }}>
+                    {nombre} <br/>{apellido}
                   </h1>
+                 :
+                 
+                 <h1 style={{fontSize:'clamp(0.6rem, 1vw, 1.25rem)', textAlign:'center'}}>
+                    {nombre} {apellido}
+                  </h1>}
+                  
                 </div>
               
               <MenuUsuario />

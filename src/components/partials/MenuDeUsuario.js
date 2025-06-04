@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-
+import { useMediaQuery} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,7 +17,7 @@ export default function MenuUsuario() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const { logout } = useContext(UserContext);
-
+    const isMobile = useMediaQuery('(max-width:600px)');
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -39,7 +39,11 @@ export default function MenuUsuario() {
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
                     >
-                        <Avatar sx={{ width: '2.5vw', height: '2.5vw' }} />
+                        {isMobile ? 
+                        (<Avatar sx={{ width: '2vh', height: '2vh' }} />)
+                        :
+                        (<Avatar sx={{ width: '2.5vw', height: '2.5vw' }} />)}
+                        
                     </IconButton>
                 </Tooltip>
             </Box>

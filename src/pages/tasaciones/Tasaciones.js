@@ -161,9 +161,9 @@ const Tasaciones = () => {
     ];
 
     const rows = [
-        { id: 1, priceType: 'Pesos', minPrice: SeparadorMiles(precios?.precioMin), maxPrice: SeparadorMiles(precios?.precioMax), avgPrice: SeparadorMiles(precios?.promedioPesos) },
-        { id: 2, priceType: 'Dólar Oficial', minPrice:SeparadorMiles(precios?.precioMinDolarOficial), maxPrice: SeparadorMiles(precios?.precioMaxDolarOficial), avgPrice:SeparadorMiles( precios?.promedioDolarOficial) },
-        { id: 3, priceType: 'Dólar MEP', minPrice:SeparadorMiles(precios?.precioMinDolarMep), maxPrice: SeparadorMiles(precios?.precioMaxDolarMep), avgPrice:SeparadorMiles( precios?.promedioDolarMep) },];
+        { id: 1, priceType: 'Pesos', minPrice:`$${SeparadorMiles(precios?.precioMin)}` , maxPrice: `$${SeparadorMiles(precios?.precioMax)}` , avgPrice:`$${SeparadorMiles(precios?.promedioPesos)}`  },
+        { id: 2, priceType: 'Dólar Oficial', minPrice:`US$${SeparadorMiles(precios?.precioMinDolarOficial)}` , maxPrice:`US$${SeparadorMiles(precios?.precioMaxDolarOficial)}` , avgPrice:`US$${SeparadorMiles( precios?.promedioDolarOficial)}` },
+        { id: 3, priceType: 'Dólar MEP', minPrice:`US$${SeparadorMiles(precios?.precioMinDolarMep)}`, maxPrice: `US$${SeparadorMiles(precios?.precioMaxDolarMep)}`, avgPrice:`US$${SeparadorMiles( precios?.promedioDolarMep)}` },];
 
     const renderAutocompletes = () => (
         <Grid container spacing={2} display="flex" flexDirection="row" justifyContent="center" alignItems="center">
@@ -373,7 +373,7 @@ const Tasaciones = () => {
                             Precios de la zona: {zonaEnTabla?.nombre}
                         </Typography>
                         {[
-                            { title: 'Pesos', data: { min: precios.precioMin, max: precios.precioMax, avg: precios.promedioPesos }, color: 'rgba(255, 152, 0, 0.3)' },
+                            { title: 'Pesos', data: { min:precios.precioMin , max: precios.precioMax, avg: precios.promedioPesos }, color: 'rgba(255, 152, 0, 0.3)' },
                             { title: 'Dólar Oficial', data: { min: precios.precioMinDolarOficial, max: precios.precioMaxDolarOficial, avg: precios.promedioDolarOficial }, color: 'rgba(76, 175, 80, 0.3)' },
                             { title: 'Dólar MEP', data: { min: precios.precioMinDolarMep, max: precios.precioMaxDolarMep, avg: precios.promedioDolarMep }, color: 'rgba(33, 150, 243, 0.3)' }
                         ].map((item, index) => (
@@ -384,9 +384,9 @@ const Tasaciones = () => {
                                 borderRadius: '5px'
                             }}>
                                 <Typography variant="subtitle1" fontWeight="bold">{item.title}</Typography>
-                                <Typography>Precio Mínimo: {item.data.min}</Typography>
-                                <Typography>Precio Máximo: {item.data.max}</Typography>
-                                <Typography>Promedio: {item.data.avg}</Typography>
+                                <Typography>Precio Mínimo: {item.title==='Pesos'? '$':'US$ '}{SeparadorMiles(item.data.min)}</Typography>
+                                <Typography>Precio Máximo: {item.title==='Pesos'? '$':'US$ '}{SeparadorMiles(item.data.max)}</Typography>
+                                <Typography>Promedio: {item.title==='Pesos'? '$':'US$ '}{SeparadorMiles(item.data.avg)}</Typography>
                             </Box>
                         ))}
                         <Box display="flex" flexDirection="column" alignItems="center" gap={2} p={2}
