@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Drawer, Typography, IconButton, Button, Modal, TextField, } from '@mui/material';
+import { Box, Drawer, Typography, IconButton, Button, Modal, TextField,useMediaQuery } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import useFetch, { host } from "../../utils/Fetch";
 import BotonLoading from '../../components/BotonLoading';
@@ -17,7 +17,7 @@ export default function Sugerencias(props) {
     const [loading, setLoading] = useState(false);
     const { getFetch, postFetch } = useFetch();
     const url = `${host}tasacion/`;
-
+    const isMobile = useMediaQuery('(max-width:600px)');
     useEffect(() => {
         getFetch(url + 'sugerencias/?zona=' + zonaEnTabla.id, true)
             .then(data => {
@@ -175,7 +175,7 @@ export default function Sugerencias(props) {
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    width: 400,
+                    width: isMobile ? '85%' : 400,
                     bgcolor: 'background.paper',
                     boxShadow: 24,
                     p: 4,

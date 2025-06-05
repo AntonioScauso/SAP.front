@@ -162,8 +162,8 @@ const Tasaciones = () => {
 
     const rows = [
         { id: 1, priceType: 'Pesos', minPrice:`$${SeparadorMiles(precios?.precioMin)}` , maxPrice: `$${SeparadorMiles(precios?.precioMax)}` , avgPrice:`$${SeparadorMiles(precios?.promedioPesos)}`  },
-        { id: 2, priceType: 'Dólar Oficial', minPrice:`US$${SeparadorMiles(precios?.precioMinDolarOficial)}` , maxPrice:`US$${SeparadorMiles(precios?.precioMaxDolarOficial)}` , avgPrice:`US$${SeparadorMiles( precios?.promedioDolarOficial)}` },
-        { id: 3, priceType: 'Dólar MEP', minPrice:`US$${SeparadorMiles(precios?.precioMinDolarMep)}`, maxPrice: `US$${SeparadorMiles(precios?.precioMaxDolarMep)}`, avgPrice:`US$${SeparadorMiles( precios?.promedioDolarMep)}` },];
+        { id: 2, priceType: 'Dólar Oficial', minPrice:`US$ ${SeparadorMiles(precios?.precioMinDolarOficial)}` , maxPrice:`US$ ${SeparadorMiles(precios?.precioMaxDolarOficial)}` , avgPrice:`US$ ${SeparadorMiles( precios?.promedioDolarOficial)}` },
+        { id: 3, priceType: 'Dólar MEP', minPrice:`US$ ${SeparadorMiles(precios?.precioMinDolarMep)}`, maxPrice: `US$ ${SeparadorMiles(precios?.precioMaxDolarMep)}`, avgPrice:`US$ ${SeparadorMiles( precios?.promedioDolarMep)}` },];
 
     const renderAutocompletes = () => (
         <Grid container spacing={2} display="flex" flexDirection="row" justifyContent="center" alignItems="center">
@@ -325,15 +325,21 @@ const Tasaciones = () => {
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
             height: '100vh',
             width: '100vw',
-            overflowY: 'auto',
+            overflowY: 'visible',
+        
+            
         }}>
             <Box sx={{
-                padding: '10px',
                 overflowY: 'auto',
-                height: '100%',
-                width: '90%',
+                height: '100vh',
+                width: '95%',
+                paddingTop: '25px',
+                paddingBottom: '20px',
+                
             }}>
                 {renderAutocompletes()}
                 <Grid container justifyContent="center" style={{ marginTop: '20px'}}>
@@ -368,7 +374,7 @@ const Tasaciones = () => {
                     </Grid>
                 </Grid>
                 {precios ? (
-                    <Box mt={2}>
+                    <Box mt={2} >
                         <Typography variant='h6' style={{ marginBottom: '10px', textAlign: 'center' }}>
                             Precios de la zona: {zonaEnTabla?.nombre}
                         </Typography>
@@ -392,15 +398,16 @@ const Tasaciones = () => {
                         <Box display="flex" flexDirection="column" alignItems="center" gap={2} p={2}
                             border={1} borderColor="primary.main" borderRadius={2} mt={2}>
                             <Typography variant="body2">
-                                Dólar Oficial: ${dolarOficial}
+                                Dólar Oficial: US$ {dolarOficial}
                             </Typography>
                             <Typography variant="body2">
-                                Dólar MEP: ${dolarMep}
+                                Dólar MEP: US$ {dolarMep}
                             </Typography>
                         </Box>
                         <Typography variant="body2" textAlign="center" mt={1} mb={2}>
                             Dólar promedio del último mes.
                         </Typography>
+                        <Sugerencias zonaEnTabla={zonaEnTabla} />
                     </Box>
                 ) : (
                     <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
@@ -412,10 +419,10 @@ const Tasaciones = () => {
     );
 
     const renderDesktopView = () => (
-        <Box display="flex" flexDirection="row" alignItems="start"  height="100%" width="100%" overflow='auto'>
+        <Box display="flex" flexDirection="row" alignItems="start"  height="100%" width="100%" overflow='auto' >
 
             <Box display="flex" flexDirection="column" width="25vw" minWidth="200px" maxWidth="400px"
-                 overflow="auto" height="100%" style={{ backgroundColor: '#E0E0E0' }} 
+                 overflow="auto" height="100%" minHeight="600px" style={{ backgroundColor: '#E0E0E0' }} 
                 sx={{
                     '&::-webkit-scrollbar': {
                         width: '0.3vw',
@@ -429,9 +436,9 @@ const Tasaciones = () => {
             
             </Box>
 
-            <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px' }} />
+            <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#28508E', width: '1px', marginRight: '10px',minHeight:"600px" }} />
 
-            <Box flexGrow={1} display="flex" flexDirection="column" padding="30px" overflow="hidden" minHeight="40vw" width='80%'>
+            <Box flexGrow={1} display="flex" flexDirection="column" padding="30px" overflow="hidden" minHeight="600px" width='80%' >
 
                 <Grid container direction="column" mt={1}  >
                     <Grid container spacing={2} justifyContent="center" alignItems="center" gap={2}>
@@ -457,10 +464,11 @@ const Tasaciones = () => {
                 </Grid>
                 {precios ?
                     <Box display="flex" flexDirection="column" mt={2} overflow='hidden' height='auto' >
-                        <Box mb={2}>
+                        <Box mb={2} >
                             <CustomDataGrid
                                 rows={rows}
                                 columns={columns}
+                                
                                 pageSize={3}
                                 hideFooter
                                 disableRowSelectionOnClick
@@ -473,6 +481,7 @@ const Tasaciones = () => {
                                     height: '100%',
                                     maxHeight: '45vh',
                                     fontSize: '1.2em',
+                                    
                                     backgroundColor: '#f0f0f0',
                                     '& .MuiDataGrid-row': {
                                         '&.dolarMEP-row': {
@@ -495,10 +504,10 @@ const Tasaciones = () => {
                             border={1} borderColor="primary.main" borderRadius={2}>
                             <Box display="flex" justifyContent="center" alignItems="center" gap={4}>
                                 <Typography variant="body1" style={{fontSize:'clamp(0.4rem, 1.3vw, 1.5rem)'}}>
-                                    Dólar Oficial: ${dolarOficial}
+                                    Dólar Oficial: US$ {dolarOficial}
                                 </Typography>
                                 <Typography variant="body1" style={{fontSize:'clamp(0.4rem, 1.3vw, 1.5rem)'}}>
-                                    Dólar MEP: ${dolarMep}
+                                    Dólar MEP: US$ {dolarMep}
                                 </Typography>
                             </Box>
                             <Typography variant="body1" textAlign="center" style={{fontSize:'clamp(0.4rem, 1.3vw, 1.5rem)'}}>

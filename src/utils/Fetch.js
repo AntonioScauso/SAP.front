@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 const hosts = ['http://192.168.0.102:8000/', "https://sap.dealbera.online/", "http://localhost:8000/"];
 
-const hostId = 1;
+const hostId = 2;
 
 export const host = hosts[hostId];
 

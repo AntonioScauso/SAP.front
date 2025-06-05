@@ -48,10 +48,11 @@ const Header = () => {
                 textOverflow: 'ellipsis',
                 mr:'-9%',
                 fontSize: 'clamp(1.3rem, 1.3vw, 2rem)',
+            
               }}
             >
               {isMobile ? (
-                <p style={{ lineHeight: '0.8' }}>
+                <p style={{ lineHeight: '0.8', position: 'absolute', top: '25%',left:'50%',transform: 'translateX(-50%)', margin: 0 }}>
                   C.P.M.C.P. <br />
                   <strong style={{ color: 'rgba(254, 254, 254, 0.57)', fontSize: '0.8rem' }}>Ley 7191</strong>
                 </p>)

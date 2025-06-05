@@ -40,7 +40,7 @@ export default function MenuUsuario() {
                         aria-expanded={open ? "true" : undefined}
                     >
                         {isMobile ? 
-                        (<Avatar sx={{ width: '2vh', height: '2vh' }} />)
+                        (<Avatar sx={{ width: '25px', height: '25px' }} />)
                         :
                         (<Avatar sx={{ width: '2.5vw', height: '2.5vw' }} />)}
                         
