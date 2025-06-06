@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "SAP",
+  "name": "Sistema de Consulta de Valores",
   "icons": [
     {
       "src": "favicon.ico",
