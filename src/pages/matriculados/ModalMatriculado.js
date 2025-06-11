@@ -130,7 +130,7 @@ export default function ModalMatriculado({ matriculados, setMatriculados, isOpen
                             value={nombre}
                             onChange={(e) => {
                                 //verifica con una expresion regular si el valor ingresado es una letra
-                                if (/^[a-zA-Z]+$/.test(e.target.value) || e.target.value === '') {
+                                if (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(e.target.value) || e.target.value === '') {
                                     setNombre(e.target.value)
                                 }
                             }}
@@ -142,7 +142,7 @@ export default function ModalMatriculado({ matriculados, setMatriculados, isOpen
                             label="Apellido"
                             value={apellido}
                             onChange={(e) => {
-                                if (/^[a-zA-Z]+$/.test(e.target.value) || e.target.value === '') {
+                                if (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(e.target.value) || e.target.value === '') {
                                     setApellido(e.target.value)
                                 }
                             }}
